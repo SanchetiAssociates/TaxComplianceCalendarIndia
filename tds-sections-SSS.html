@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TDS / TCS Section Code Master — S S Sancheti & Associates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0D1B35;
+    --navy-light: #162447;
+    --navy-mid: #1E3A5F;
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --cream: #F8F5EF;
+    --cream-dark: #EDE8DE;
+    --white: #FFFFFF;
+    --text-dark: #0D1B35;
+    --text-mid: #4A5568;
+    --text-light: #718096;
+    --tds-clr: #1A5276;
+    --tds-bg: #EBF5FB;
+    --tcs-clr: #6B3FA0;
+    --tcs-bg: #F3EEF9;
+    --rate-clr: #1B6B3A;
+    --rate-bg: #E9F5EE;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--text-dark); min-height:100vh; }
+
+  /* ── HEADER ── */
+  .site-header { background:var(--navy); position:sticky; top:0; z-index:100; box-shadow:0 2px 20px rgba(0,0,0,0.35); }
+  .header-top { display:flex; align-items:center; justify-content:space-between; padding:12px 24px; border-bottom:1px solid rgba(201,168,76,0.2); flex-wrap:wrap; gap:10px; }
+  .firm-brand { display:flex; align-items:center; gap:12px; }
+  .logo-circle { width:42px; height:42px; background:linear-gradient(135deg,var(--gold),var(--gold-light)); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-weight:700; font-size:15px; color:var(--navy); flex-shrink:0; }
+  .firm-name h1 { font-family:'Playfair Display',serif; font-size:14px; font-weight:600; color:white; line-height:1.2; }
+  .firm-name p { font-size:10px; color:var(--gold); letter-spacing:0.8px; text-transform:uppercase; font-weight:500; }
+  .header-actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .search-wrap { position:relative; }
+  .search-wrap svg { position:absolute; left:9px; top:50%; transform:translateY(-50%); color:var(--gold); width:13px; height:13px; pointer-events:none; }
+  #searchInput { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:20px; padding:6px 12px 6px 30px; color:white; font-size:12.5px; font-family:'DM Sans',sans-serif; width:200px; outline:none; transition:all 0.2s; }
+  #searchInput::placeholder { color:rgba(255,255,255,0.35); }
+  #searchInput:focus { background:rgba(255,255,255,0.12); border-color:rgba(201,168,76,0.5); width:240px; }
+  .hdr-btn { background:transparent; border:1px solid rgba(201,168,76,0.4); color:var(--gold); padding:5px 12px; border-radius:20px; font-size:11.5px; font-family:'DM Sans',sans-serif; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:5px; white-space:nowrap; }
+  .hdr-btn:hover { background:rgba(201,168,76,0.15); border-color:var(--gold); }
+
+  .header-bottom { padding:10px 24px; display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+  .page-title { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:white; }
+  .page-subtitle { font-size:11.5px; color:rgba(255,255,255,0.5); margin-top:2px; }
+  .page-subtitle strong { color:var(--gold); }
+  .prepared-by { font-size:11px; color:rgba(255,255,255,0.45); }
+  .prepared-by strong { color:var(--gold-light); font-weight:500; }
+
+  /* ── STAT STRIP ── */
+  .stats-strip { background:var(--navy-light); display:flex; gap:0; border-bottom:1px solid rgba(201,168,76,0.15); overflow-x:auto; scrollbar-width:none; }
+  .stats-strip::-webkit-scrollbar { display:none; }
+  .stat-item { flex:1; min-width:120px; padding:12px 16px; text-align:center; border-right:1px solid rgba(255,255,255,0.06); cursor:pointer; transition:background 0.15s; }
+  .stat-item:last-child { border-right:none; }
+  .stat-item:hover { background:rgba(255,255,255,0.05); }
+  .stat-item.active { background:rgba(201,168,76,0.1); }
+  .stat-item .snum { font-family:'Playfair Display',serif; font-size:22px; font-weight:700; color:white; line-height:1; }
+  .stat-item.tds-stat .snum { color:#7EC8E3; }
+  .stat-item.tcs-stat .snum { color:#C9A0DC; }
+  .stat-item .slabel { font-size:10px; color:rgba(255,255,255,0.45); text-transform:uppercase; letter-spacing:0.5px; margin-top:2px; }
+
+  /* ── FILTERS ── */
+  .filters-bar { background:white; padding:10px 24px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; border-bottom:1px solid var(--cream-dark); }
+  .fl { font-size:11px; color:var(--text-light); font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-right:2px; flex-shrink:0; }
+  .pill { display:inline-flex; align-items:center; padding:4px 11px; border-radius:20px; font-size:12px; font-weight:500; cursor:pointer; border:1.5px solid var(--cream-dark); background:var(--cream); color:var(--text-mid); transition:all 0.15s; user-select:none; white-space:nowrap; }
+  .pill:hover { border-color:var(--navy); color:var(--navy); }
+  .pill.active { background:var(--navy); color:white; border-color:var(--navy); }
+  .pill.tds-pill.active { background:var(--tds-clr); border-color:var(--tds-clr); }
+  .pill.tcs-pill.active { background:var(--tcs-clr); border-color:var(--tcs-clr); }
+  .vdiv { width:1px; height:18px; background:var(--cream-dark); margin:0 2px; }
+
+  /* ── RESULTS BAR ── */
+  .results-bar { padding:8px 24px; background:var(--cream); border-bottom:1px solid var(--cream-dark); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+  .rcount { font-size:12.5px; color:var(--text-mid); }
+  .rcount strong { color:var(--text-dark); font-size:14px; }
+  .clear-btn { font-size:12px; color:var(--text-light); background:none; border:1px solid var(--cream-dark); padding:3px 10px; border-radius:12px; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.15s; }
+  .clear-btn:hover { color:var(--navy); border-color:var(--navy); }
+
+  /* ── TABLE ── */
+  .table-wrap { padding:0 24px 48px; overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; background:white; border-radius:12px; overflow:hidden; box-shadow:0 2px 16px rgba(0,0,0,0.07); margin-top:16px; min-width:900px; }
+  thead th { background:var(--navy); color:rgba(255,255,255,0.75); font-size:10.5px; font-weight:600; letter-spacing:0.6px; text-transform:uppercase; padding:11px 12px; text-align:left; white-space:nowrap; cursor:pointer; user-select:none; }
+  thead th:hover { color:var(--gold); }
+  thead th.sorted { color:var(--gold); }
+  .sort-icon { margin-left:3px; font-size:9px; opacity:0.5; }
+  thead th.sorted .sort-icon { opacity:1; }
+  tbody tr { border-bottom:1px solid #F0EDE6; transition:background 0.1s; }
+  tbody tr:last-child { border-bottom:none; }
+  tbody tr:hover { background:#FAFAF7; }
+  td { padding:10px 12px; font-size:12.5px; vertical-align:middle; }
+  .td-num { color:var(--text-light); font-size:11px; width:32px; text-align:center; }
+  .type-badge { display:inline-flex; align-items:center; padding:2px 8px; border-radius:20px; font-size:10.5px; font-weight:700; letter-spacing:0.4px; }
+  .type-tds { background:var(--tds-bg); color:var(--tds-clr); }
+  .type-tcs { background:var(--tcs-bg); color:var(--tcs-clr); }
+  .code-cell { font-family:'DM Mono',monospace,sans-serif; font-size:12px; font-weight:600; color:var(--navy-mid); background:var(--cream); padding:3px 8px; border-radius:5px; display:inline-block; letter-spacing:0.5px; }
+  .sec-old { font-size:11.5px; color:var(--tds-clr); font-weight:600; }
+  .sec-new { font-size:11.5px; color:#6B3FA0; font-weight:600; }
+  .sec-arrow { color:var(--text-light); font-size:11px; margin:0 4px; }
+  .nature-cell { font-weight:500; font-size:12.5px; color:var(--text-dark); }
+  .deductor-cell { font-size:11.5px; color:var(--text-mid); }
+  .payee-cell { font-size:11.5px; color:var(--text-mid); }
+  .rate-cell { font-weight:600; font-size:12.5px; }
+  .rate-normal { color:var(--rate-clr); }
+  .rate-high { color:#C0392B; }
+  .threshold-cell { font-size:11.5px; color:var(--text-mid); white-space:nowrap; }
+  .form-badge { display:inline-flex; align-items:center; gap:3px; font-size:10.5px; font-weight:600; }
+  .form-old { background:#EBF5FB; color:#1A5276; padding:2px 6px; border-radius:4px; }
+  .form-new { background:#F3EEF9; color:#6B3FA0; padding:2px 6px; border-radius:4px; }
+  .action-btn { background:none; border:1px solid var(--cream-dark); border-radius:6px; width:27px; height:27px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; color:var(--text-light); font-size:12px; transition:all 0.15s; }
+  .action-btn:hover { background:var(--cream); border-color:var(--navy); color:var(--navy); }
+
+  /* group separator */
+  tr.grp-sep td { background:var(--cream); font-size:11px; font-weight:700; color:var(--text-mid); padding:6px 12px; letter-spacing:0.5px; text-transform:uppercase; border-bottom:1px solid var(--cream-dark); }
+  tr.grp-sep td span { background:var(--navy); color:var(--gold); font-size:10px; padding:2px 8px; border-radius:10px; margin-left:8px; font-weight:600; }
+
+  /* empty */
+  .empty-state { text-align:center; padding:50px 20px; color:var(--text-light); }
+  .empty-state .eicon { font-size:36px; margin-bottom:10px; }
+
+  /* ── CALCULATOR MODAL ── */
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:200; display:none; align-items:center; justify-content:center; padding:16px; }
+  .modal-overlay.open { display:flex; }
+  .modal { background:white; border-radius:16px; padding:28px; width:100%; max-width:440px; box-shadow:0 20px 60px rgba(0,0,0,0.25); position:relative; }
+  .modal h3 { font-family:'Playfair Display',serif; font-size:18px; color:var(--navy); margin-bottom:4px; }
+  .modal .modal-sub { font-size:12px; color:var(--text-light); margin-bottom:20px; }
+  .modal-close { position:absolute; top:16px; right:16px; background:none; border:none; font-size:20px; cursor:pointer; color:var(--text-light); }
+  .modal-close:hover { color:var(--navy); }
+  .form-group { margin-bottom:14px; }
+  .form-group label { font-size:12px; font-weight:600; color:var(--text-mid); display:block; margin-bottom:5px; text-transform:uppercase; letter-spacing:0.4px; }
+  .form-group select, .form-group input { width:100%; padding:9px 12px; border:1.5px solid var(--cream-dark); border-radius:8px; font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text-dark); outline:none; transition:border-color 0.15s; background:white; }
+  .form-group select:focus, .form-group input:focus { border-color:var(--navy); }
+  .calc-btn { width:100%; padding:10px; background:var(--navy); color:white; border:none; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; margin-top:4px; transition:background 0.15s; }
+  .calc-btn:hover { background:var(--navy-mid); }
+  .calc-result { margin-top:16px; padding:14px 16px; background:var(--cream); border-radius:10px; display:none; }
+  .calc-result.show { display:block; }
+  .calc-result .res-row { display:flex; justify-content:space-between; align-items:center; padding:5px 0; border-bottom:1px solid var(--cream-dark); font-size:13px; }
+  .calc-result .res-row:last-child { border-bottom:none; font-weight:700; font-size:14px; }
+  .calc-result .res-row span:last-child { color:var(--navy); font-weight:600; }
+  .calc-result .res-row:last-child span:last-child { color:var(--rate-clr); font-size:16px; }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer-bar { background:rgba(192,57,43,0.07); border-top:1px solid rgba(192,57,43,0.2); padding:8px 24px; display:flex; align-items:center; gap:8px; }
+  .disclaimer-bar span { font-size:11.5px; color:#922B21; }
+  .disclaimer-bar strong { font-weight:600; }
+
+  /* ── FOOTER ── */
+  .site-footer { background:var(--navy); color:rgba(255,255,255,0.4); text-align:center; padding:18px 24px; font-size:11px; line-height:1.8; }
+  .site-footer .fbrand { font-family:'Playfair Display',serif; color:var(--gold); font-size:13px; margin-bottom:4px; font-weight:600; }
+  .site-footer .fdis { color:rgba(255,255,255,0.25); font-size:10px; max-width:680px; margin:6px auto 0; line-height:1.6; }
+
+  /* ── TOAST ── */
+  .toast { position:fixed; bottom:20px; right:20px; background:var(--navy); color:white; padding:9px 16px; border-radius:8px; font-size:12.5px; box-shadow:0 4px 20px rgba(0,0,0,0.2); transform:translateY(60px); opacity:0; transition:all 0.3s; z-index:300; border-left:3px solid var(--gold); }
+  .toast.show { transform:translateY(0); opacity:1; }
+
+  /* ── PRINT ── */
+  @media print {
+    .site-header { position:static; }
+    .stats-strip, .filters-bar, .results-bar, .disclaimer-bar, .header-actions { display:none !important; }
+    .table-wrap { padding:0; }
+    table { box-shadow:none; min-width:auto; }
+    .action-btn { display:none; }
+    thead th { background:#0D1B35 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .modal-overlay { display:none !important; }
+  }
+
+  @media (max-width:768px) {
+    .header-top { padding:10px 14px; }
+    .table-wrap { padding:0 12px 36px; }
+    .filters-bar, .results-bar { padding:10px 14px; }
+    .stats-strip .stat-item { min-width:90px; }
+    #searchInput { width:150px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-top">
+    <div class="firm-brand">
+      <div class="logo-circle">SS</div>
+      <div class="firm-name">
+        <h1>S S Sancheti &amp; Associates</h1>
+        <p>Chartered Accountants · Mumbai</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="search-wrap">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/></svg>
+        <input type="text" id="searchInput" placeholder="Search section, nature, rate…" autocomplete="off">
+      </div>
+      <button class="hdr-btn" onclick="document.getElementById('calcModal').classList.add('open')">🧮 TDS/TCS Calculator</button>
+      <button class="hdr-btn" onclick="exportCSV()">⬇️ Export CSV</button>
+      <button class="hdr-btn" onclick="window.print()">🖨️ Print</button>
+    </div>
+  </div>
+  <div class="header-bottom">
+    <div>
+      <div class="page-title">TDS / TCS Section Code Master</div>
+      <div class="page-subtitle">IT Act, 1961 &nbsp;⟷&nbsp; <strong>IT Act, 2025</strong> &nbsp;·&nbsp; Tax Year 2026-27 &nbsp;·&nbsp; Forms 24Q · 26Q · 27Q · 27EQ (Forms 138 · 140 · 143 · 144)</div>
+    </div>
+    <div class="prepared-by">Compiled by &nbsp;<strong>CA. Siddharth S. Sancheti</strong></div>
+  </div>
+</header>
+
+<!-- DISCLAIMER BAR -->
+<div class="disclaimer-bar">
+  <span>⚠️ &nbsp;<strong>Legal Disclaimer:</strong> For reference &amp; educational purposes only. Always verify from <strong>Official Gazette / CBDT Circulars</strong> before use for compliance or filing. Rates under IT Act 2025 are effective Tax Year 2026-27.</span>
+</div>
+
+<!-- STAT STRIP -->
+<div class="stats-strip">
+  <div class="stat-item" onclick="filterType('all',this)">
+    <div class="snum" id="statTotal">—</div>
+    <div class="slabel">Total Codes</div>
+  </div>
+  <div class="stat-item tds-stat" onclick="filterType('TDS',this)">
+    <div class="snum" id="statTDS">—</div>
+    <div class="slabel">TDS Codes</div>
+  </div>
+  <div class="stat-item tcs-stat" onclick="filterType('TCS',this)">
+    <div class="snum" id="statTCS">—</div>
+    <div class="slabel">TCS Codes</div>
+  </div>
+  <div class="stat-item" onclick="filterForm('140',this)">
+    <div class="snum" style="color:#7EC8E3">26Q</div>
+    <div class="slabel">Form 26Q / 140</div>
+  </div>
+  <div class="stat-item" onclick="filterForm('143',this)">
+    <div class="snum" style="color:#F9CA76">27Q</div>
+    <div class="slabel">Form 27Q / 143</div>
+  </div>
+  <div class="stat-item" onclick="filterForm('144',this)">
+    <div class="snum" style="color:#C9A0DC">27EQ</div>
+    <div class="slabel">Form 27EQ / 144</div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters-bar">
+  <span class="fl">Type</span>
+  <span class="pill active" data-type="all" onclick="filterType('all',this)">All</span>
+  <span class="pill tds-pill" data-type="TDS" onclick="filterType('TDS',this)">TDS</span>
+  <span class="pill tcs-pill" data-type="TCS" onclick="filterType('TCS',this)">TCS</span>
+  <div class="vdiv"></div>
+  <span class="fl">Form</span>
+  <span class="pill" data-form="all" onclick="filterForm('all',this)">All Forms</span>
+  <span class="pill" data-form="24Q" onclick="filterForm('24Q',this)">24Q / 138</span>
+  <span class="pill" data-form="26Q" onclick="filterForm('26Q',this)">26Q / 140</span>
+  <span class="pill" data-form="27Q" onclick="filterForm('27Q',this)">27Q / 143</span>
+  <span class="pill" data-form="27EQ" onclick="filterForm('27EQ',this)">27EQ / 144</span>
+  <div class="vdiv"></div>
+  <span class="fl">Payee</span>
+  <span class="pill" data-payee="all" onclick="filterPayee('all',this)">All</span>
+  <span class="pill" data-payee="Resident" onclick="filterPayee('Resident',this)">Resident</span>
+  <span class="pill" data-payee="Non-Resident" onclick="filterPayee('Non-Resident',this)">Non-Resident</span>
+</div>
+
+<!-- RESULTS BAR -->
+<div class="results-bar">
+  <div class="rcount">Showing <strong id="shownCount">—</strong> section codes</div>
+  <button class="clear-btn" onclick="resetAll()">↺ Reset All Filters</button>
+</div>
+
+<!-- TABLE -->
+<div class="table-wrap">
+  <table id="mainTable">
+    <thead>
+      <tr>
+        <th class="td-num">#</th>
+        <th onclick="sortBy('type')">Type <span class="sort-icon" id="si-type"></span></th>
+        <th onclick="sortBy('code')">Code <span class="sort-icon" id="si-code">▲</span></th>
+        <th>Nature of Payment / Receipt</th>
+        <th onclick="sortBy('sec1961')">Old Sec (1961) <span class="sort-icon" id="si-sec1961"></span></th>
+        <th>New Sec (2025)</th>
+        <th>Deductor / Collector</th>
+        <th>Payee / Deductee</th>
+        <th onclick="sortBy('rate')">Rate <span class="sort-icon" id="si-rate"></span></th>
+        <th>Threshold</th>
+        <th>Form (Old → New)</th>
+        <th>Copy</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+  <div class="empty-state" id="emptyState" style="display:none">
+    <div class="eicon">🔍</div>
+    <p>No section codes match your filters. <a href="#" onclick="resetAll();return false;" style="color:var(--navy)">Reset filters</a></p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="fbrand">S S Sancheti &amp; Associates · Chartered Accountants</div>
+  <div>Mumbai &nbsp;|&nbsp; Compiled by CA. Siddharth S. Sancheti &nbsp;|&nbsp; Tax Year 2026-27</div>
+  <div class="fdis">This section code master is compiled for general reference purposes only. Rates and thresholds are based on the Income Tax Act 1961 (as amended) and IT Act 2025 applicable for Tax Year 2026-27. Always verify from official CBDT circulars and notifications before use. S S Sancheti &amp; Associates does not accept liability for any action taken solely on the basis of this reference.</div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- CALCULATOR MODAL -->
+<div class="modal-overlay" id="calcModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('calcModal').classList.remove('open')">✕</button>
+    <h3>🧮 TDS / TCS Calculator</h3>
+    <div class="modal-sub">Compute TDS / TCS amount for any section code</div>
+    <div class="form-group">
+      <label>Section Code</label>
+      <select id="calcSection">
+        <option value="">— Select Section Code —</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Payment / Receipt Amount (₹)</label>
+      <input type="number" id="calcAmount" placeholder="e.g. 1,00,000" min="0">
+    </div>
+    <div class="form-group">
+      <label>PAN Available?</label>
+      <select id="calcPAN">
+        <option value="yes">Yes — PAN furnished</option>
+        <option value="no">No — PAN not furnished (Higher rate applies)</option>
+      </select>
+    </div>
+    <button class="calc-btn" onclick="calculate()">Calculate TDS / TCS</button>
+    <div class="calc-result" id="calcResult"></div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const sections = [
+  // ── TDS ──────────────────────────────────────────────────────────────────
+  { code:"192",  type:"TDS", sec1961:"192",       sec2025:"393",    nature:"Salary",                                    deductor:"Any Employer",                                  payee:"Resident Employee",            rate:"Slab Rates",   rateNum:0,    threshold:"Basic exemption limit",           form:"24Q",  formNew:"138", highRate:20 },
+  { code:"192A", type:"TDS", sec1961:"192A",      sec2025:"394",    nature:"Premature withdrawal from PF",              deductor:"EPFO / Recognised PF Trust",                    payee:"Resident",                     rate:"10%",          rateNum:10,   threshold:"₹50,000",                         form:"26Q",  formNew:"140", highRate:20 },
+  { code:"193",  type:"TDS", sec1961:"193",       sec2025:"395",    nature:"Interest on securities",                    deductor:"Any person",                                    payee:"Resident",                     rate:"10%",          rateNum:10,   threshold:"₹10,000 (listed debentures)",     form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194",  type:"TDS", sec1961:"194",       sec2025:"396",    nature:"Dividend",                                  deductor:"Domestic Company / MF / UTI",                   payee:"Resident Shareholder",         rate:"10%",          rateNum:10,   threshold:"₹5,000",                          form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194A", type:"TDS", sec1961:"194A",      sec2025:"397",    nature:"Interest other than on securities",         deductor:"Banks, Co-ops, Post Office, Others",            payee:"Resident",                     rate:"10%",          rateNum:10,   threshold:"₹50,000 (SR Citizen/Banks), ₹40,000 (Others/Banks), ₹5,000 (Other sources)",form:"26Q",formNew:"140",highRate:20},
+  { code:"194B", type:"TDS", sec1961:"194B",      sec2025:"398",    nature:"Winnings — Lottery / Crossword / Game",     deductor:"Person responsible for payment",                payee:"Resident",                     rate:"30%",          rateNum:30,   threshold:"₹10,000 per transaction",         form:"26Q",  formNew:"140", highRate:30 },
+  { code:"194BA",type:"TDS", sec1961:"194BA",     sec2025:"399",    nature:"Winnings — Online games (VDA/Cash)",        deductor:"Online gaming intermediary",                    payee:"Resident",                     rate:"30%",          rateNum:30,   threshold:"Nil",                             form:"26Q",  formNew:"140", highRate:30 },
+  { code:"194BB",type:"TDS", sec1961:"194BB",     sec2025:"400",    nature:"Winnings — Horse race",                     deductor:"Person responsible (bookmaker/club)",            payee:"Resident",                     rate:"30%",          rateNum:30,   threshold:"₹10,000",                         form:"26Q",  formNew:"140", highRate:30 },
+  { code:"194C", type:"TDS", sec1961:"194C",      sec2025:"401",    nature:"Payments to contractors / sub-contractors", deductor:"Specified persons (Govt, Co, Firm etc.)",        payee:"Resident Contractor",          rate:"1% (I/HUF), 2% (Others)", rateNum:2, threshold:"₹30,000 per contract; ₹1,00,000 aggregate p.a.", form:"26Q",formNew:"140",highRate:20},
+  { code:"194D", type:"TDS", sec1961:"194D",      sec2025:"402",    nature:"Insurance commission",                      deductor:"Insurance company",                             payee:"Resident Agent",               rate:"5%",           rateNum:5,    threshold:"₹15,000",                         form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194DA",type:"TDS", sec1961:"194DA",     sec2025:"403",    nature:"Maturity of life insurance policy",         deductor:"Insurer",                                       payee:"Resident Policyholder",        rate:"5% (on income component)", rateNum:5, threshold:"₹1,00,000",        form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194E", type:"TDS", sec1961:"194E",      sec2025:"404",    nature:"Payments to NR sportsman/entertainer",      deductor:"Any person",                                    payee:"Non-Resident",                 rate:"20%",          rateNum:20,   threshold:"Nil",                             form:"27Q",  formNew:"143", highRate:20 },
+  { code:"194EE",type:"TDS", sec1961:"194EE",     sec2025:"405",    nature:"Payments from NSS deposits",                deductor:"Post office / Scheduled bank",                  payee:"Resident",                     rate:"10%",          rateNum:10,   threshold:"₹2,500",                          form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194G", type:"TDS", sec1961:"194G",      sec2025:"407",    nature:"Commission on lottery tickets",             deductor:"Any person",                                    payee:"Resident",                     rate:"5%",           rateNum:5,    threshold:"₹15,000",                         form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194H", type:"TDS", sec1961:"194H",      sec2025:"408",    nature:"Commission or brokerage",                   deductor:"Any person (excl. Indiv/HUF not under audit)",  payee:"Resident",                     rate:"5%",           rateNum:5,    threshold:"₹15,000",                         form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194-I(a)",type:"TDS",sec1961:"194-I(a)",sec2025:"409",    nature:"Rent — Plant & Machinery",                  deductor:"Any person (excl. Indiv/HUF not under audit)",  payee:"Resident",                     rate:"2%",           rateNum:2,    threshold:"₹2,40,000 p.a.",                  form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194-I(b)",type:"TDS",sec1961:"194-I(b)",sec2025:"410",    nature:"Rent — Land / Building / Furniture",        deductor:"Any person (excl. Indiv/HUF not under audit)",  payee:"Resident",                     rate:"10%",          rateNum:10,   threshold:"₹2,40,000 p.a.",                  form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194-IA",type:"TDS", sec1961:"194-IA",   sec2025:"411",    nature:"Purchase of immovable property (excl. agri land)", deductor:"Transferee (Buyer)",               payee:"Resident Seller",              rate:"1%",           rateNum:1,    threshold:"₹50,00,000",                      form:"26QB", formNew:"140", highRate:20 },
+  { code:"194-IB",type:"TDS", sec1961:"194-IB",   sec2025:"412",    nature:"Rent by Individual / HUF (not under audit)", deductor:"Individual / HUF (not under tax audit)",       payee:"Resident Landlord",            rate:"2%",           rateNum:2,    threshold:"₹50,000 per month",               form:"26QC", formNew:"140", highRate:20 },
+  { code:"194-IC",type:"TDS", sec1961:"194-IC",   sec2025:"413",    nature:"Payment under Joint Development Agreement (JDA)", deductor:"Developer / Builder",                  payee:"Resident Land Owner",          rate:"10%",          rateNum:10,   threshold:"Nil",                             form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194J(a)",type:"TDS",sec1961:"194J(a)",  sec2025:"414",    nature:"Fees for technical services / call centre",  deductor:"Any person (excl. Indiv/HUF not under audit)", payee:"Resident",                    rate:"2%",           rateNum:2,    threshold:"₹30,000",                         form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194J(b)",type:"TDS",sec1961:"194J(b)",  sec2025:"415",    nature:"Fees for professional services / royalty / NE director fees", deductor:"Any person (excl. Indiv/HUF not under audit)", payee:"Resident", rate:"10%",      rateNum:10,   threshold:"₹30,000",                         form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194K", type:"TDS", sec1961:"194K",      sec2025:"416",    nature:"Income from units of MF / UTI",             deductor:"Mutual Fund / UTI",                             payee:"Resident Unit Holder",         rate:"10%",          rateNum:10,   threshold:"₹5,000",                          form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194LA",type:"TDS", sec1961:"194LA",     sec2025:"417",    nature:"Compensation on compulsory acquisition",     deductor:"Person making payment",                         payee:"Resident",                     rate:"10%",          rateNum:10,   threshold:"₹2,50,000",                       form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194LB",type:"TDS", sec1961:"194LB",     sec2025:"418",    nature:"Interest from infrastructure debt fund (NR)", deductor:"Infrastructure Debt Fund",                    payee:"Non-Resident",                 rate:"5%",           rateNum:5,    threshold:"Nil",                             form:"27Q",  formNew:"143", highRate:20 },
+  { code:"194LBA",type:"TDS",sec1961:"194LBA(a)", sec2025:"419",    nature:"Business trust distribution — Resident",     deductor:"Business Trust (REIT/InvIT)",                   payee:"Resident Unit Holder",         rate:"10%",          rateNum:10,   threshold:"Nil",                             form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194LBB",type:"TDS",sec1961:"194LBB",    sec2025:"420",    nature:"Income from investment fund",               deductor:"Investment Fund",                               payee:"Resident / Non-Resident",      rate:"10% (Res), 40% (NR-Co)", rateNum:10, threshold:"Nil",                form:"26Q/27Q",formNew:"140/143",highRate:20},
+  { code:"194LBC",type:"TDS",sec1961:"194LBC",    sec2025:"421",    nature:"Income from securitisation fund",           deductor:"Securitisation Trust",                          payee:"Resident",                     rate:"25% (I/HUF), 30% (Others)", rateNum:25, threshold:"Nil",          form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194LC",type:"TDS", sec1961:"194LC",     sec2025:"422",    nature:"Interest on foreign currency bonds/loans to FPI", deductor:"Indian Co / Business Trust",              payee:"Non-Resident FPI/FII",         rate:"5%",           rateNum:5,    threshold:"Nil",                             form:"27Q",  formNew:"143", highRate:20 },
+  { code:"194LD",type:"TDS", sec1961:"194LD",     sec2025:"423",    nature:"Interest on Rupee bonds / Govt. securities (FPI)", deductor:"Govt / Indian Company",                 payee:"FPI / FII",                    rate:"5%",           rateNum:5,    threshold:"Nil",                             form:"27Q",  formNew:"143", highRate:20 },
+  { code:"194M", type:"TDS", sec1961:"194M",      sec2025:"424",    nature:"Payments by Individual/HUF to contractor or professional", deductor:"Individual / HUF (any)",         payee:"Resident",                     rate:"2% (FTS), 5% (Prof)", rateNum:5, threshold:"₹50,00,000 p.a.",          form:"26QD", formNew:"140", highRate:20 },
+  { code:"194N", type:"TDS", sec1961:"194N",      sec2025:"425",    nature:"Cash withdrawal from bank / cooperative",   deductor:"Bank / Post Office / Co-operative Society",     payee:"Resident",                     rate:"2% (>₹1Cr); 5% (>₹20L if no ITR)", rateNum:2, threshold:"₹1,00,00,000 (or ₹20,00,000 if no ITR filed)", form:"26Q",formNew:"140",highRate:20},
+  { code:"194-O",type:"TDS", sec1961:"194-O",     sec2025:"426",    nature:"E-commerce participant payments",           deductor:"E-commerce Operator",                           payee:"Resident Participant",         rate:"1%",           rateNum:1,    threshold:"₹5,00,000",                       form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194P", type:"TDS", sec1961:"194P",      sec2025:"427",    nature:"TDS for specified senior citizens (75+)",   deductor:"Specified Bank",                                payee:"Senior Citizen (Resident, 75+)",rate:"Slab Rates",  rateNum:0,    threshold:"Basic exemption limit",           form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194Q", type:"TDS", sec1961:"194Q",      sec2025:"428",    nature:"Purchase of goods",                         deductor:"Buyer (turnover > ₹10 Cr)",                     payee:"Resident Seller",              rate:"0.1%",         rateNum:0.1,  threshold:"₹50,00,000 p.a.",                 form:"26Q",  formNew:"140", highRate:5 },
+  { code:"194R", type:"TDS", sec1961:"194R",      sec2025:"429",    nature:"Benefits / perquisites to business or profession", deductor:"Any person providing benefit",           payee:"Resident",                     rate:"10%",          rateNum:10,   threshold:"₹20,000 p.a.",                    form:"26Q",  formNew:"140", highRate:20 },
+  { code:"194S", type:"TDS", sec1961:"194S",      sec2025:"430",    nature:"Transfer of Virtual Digital Assets (VDA/Crypto)", deductor:"Specified person / Exchange",            payee:"Resident / NR",                rate:"1% (0.01% specified person)", rateNum:1, threshold:"₹10,000 (₹50,000 specified)",   form:"26QE", formNew:"140", highRate:20 },
+  { code:"195",  type:"TDS", sec1961:"195",       sec2025:"196",    nature:"Other payments to non-residents",           deductor:"Any person",                                    payee:"Non-Resident",                 rate:"Rates in force (DTAA applicable)", rateNum:0, threshold:"Nil",      form:"27Q",  formNew:"143", highRate:20 },
+  { code:"196A", type:"TDS", sec1961:"196A",      sec2025:"—",      nature:"Income of a foreign company from MF units", deductor:"MF / UTI",                                      payee:"Non-Resident",                 rate:"20%",          rateNum:20,   threshold:"Nil",                             form:"27Q",  formNew:"143", highRate:20 },
+  { code:"196B", type:"TDS", sec1961:"196B",      sec2025:"—",      nature:"Income from units of offshore funds",       deductor:"Offshore Fund",                                 payee:"Non-Resident",                 rate:"10%",          rateNum:10,   threshold:"Nil",                             form:"27Q",  formNew:"143", highRate:20 },
+  { code:"196C", type:"TDS", sec1961:"196C",      sec2025:"—",      nature:"Income from foreign currency bonds / GDRs", deductor:"Any person",                                    payee:"Non-Resident",                 rate:"10%",          rateNum:10,   threshold:"Nil",                             form:"27Q",  formNew:"143", highRate:20 },
+  { code:"196D", type:"TDS", sec1961:"196D",      sec2025:"—",      nature:"Income of FIIs from securities",            deductor:"Any person",                                    payee:"FII / FPI",                    rate:"20%",          rateNum:20,   threshold:"Nil",                             form:"27Q",  formNew:"143", highRate:20 },
+
+  // ── TCS ──────────────────────────────────────────────────────────────────
+  { code:"206C(1)-Scrap",   type:"TCS", sec1961:"206C(1)",   sec2025:"461", nature:"Scrap",                                      deductor:"Seller / Manufacturer",                         payee:"Buyer",                        rate:"1%",  rateNum:1,    threshold:"Nil",                             form:"27EQ", formNew:"144", highRate:20 },
+  { code:"206C(1)-Tendu",   type:"TCS", sec1961:"206C(1)",   sec2025:"461", nature:"Tendu Leaves",                               deductor:"Forest produce contractor / Seller",             payee:"Buyer",                        rate:"5%",  rateNum:5,    threshold:"Nil",                             form:"27EQ", formNew:"144", highRate:20 },
+  { code:"206C(1)-Timber",  type:"TCS", sec1961:"206C(1)",   sec2025:"461", nature:"Timber obtained under forest lease",         deductor:"Seller",                                        payee:"Buyer",                        rate:"2.5%",rateNum:2.5,  threshold:"Nil",                             form:"27EQ", formNew:"144", highRate:20 },
+  { code:"206C(1)-Forest",  type:"TCS", sec1961:"206C(1)",   sec2025:"461", nature:"Other forest produce (excl. timber/tendu)", deductor:"Seller",                                        payee:"Buyer",                        rate:"2.5%",rateNum:2.5,  threshold:"Nil",                             form:"27EQ", formNew:"144", highRate:20 },
+  { code:"206C(1)-Mineral", type:"TCS", sec1961:"206C(1)",   sec2025:"461", nature:"Minerals — Coal, Lignite, Iron Ore",         deductor:"Seller",                                        payee:"Buyer",                        rate:"1%",  rateNum:1,    threshold:"Nil",                             form:"27EQ", formNew:"144", highRate:20 },
+  { code:"206C(1C)",        type:"TCS", sec1961:"206C(1C)",  sec2025:"462", nature:"Parking lot / Toll plaza / Mining licence",  deductor:"Licensor",                                      payee:"Licensee / Lessee",            rate:"2%",  rateNum:2,    threshold:"Nil",                             form:"27EQ", formNew:"144", highRate:20 },
+  { code:"206C(1F)",        type:"TCS", sec1961:"206C(1F)",  sec2025:"463", nature:"Sale of motor vehicle (value > ₹10L)",       deductor:"Seller (dealer)",                               payee:"Buyer",                        rate:"1%",  rateNum:1,    threshold:"₹10,00,000",                      form:"27EQ", formNew:"144", highRate:20 },
+  { code:"206C(1G)-LRS",    type:"TCS", sec1961:"206C(1G)",  sec2025:"464", nature:"Overseas remittance under LRS (other)",      deductor:"Authorised Dealer (Bank)",                      payee:"Remitter",                     rate:"5% (20% if no PAN)", rateNum:5, threshold:"₹7,00,000",           form:"27EQ", formNew:"144", highRate:20 },
+  { code:"206C(1G)-Edu",    type:"TCS", sec1961:"206C(1G)",  sec2025:"464", nature:"LRS remittance for education (via loan)",    deductor:"Authorised Dealer (Bank)",                      payee:"Remitter",                     rate:"0.5%",rateNum:0.5,  threshold:"₹7,00,000",                       form:"27EQ", formNew:"144", highRate:20 },
+  { code:"206C(1G)-Tour",   type:"TCS", sec1961:"206C(1G)",  sec2025:"464", nature:"Overseas tour package (any amount)",         deductor:"Tour Operator",                                 payee:"Buyer",                        rate:"5% (20% if no PAN)", rateNum:5, threshold:"Nil",                 form:"27EQ", formNew:"144", highRate:20 },
+  { code:"206C(1H)",        type:"TCS", sec1961:"206C(1H)",  sec2025:"465", nature:"Sale of goods (seller turnover > ₹10 Cr)",   deductor:"Seller",                                        payee:"Buyer (where 194Q not applicable)", rate:"0.1%",rateNum:0.1,threshold:"₹50,00,000",             form:"27EQ", formNew:"144", highRate:5 },
+];
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let activeType   = 'all';
+let activeForm   = 'all';
+let activePayee  = 'all';
+let sortField    = 'code';
+let sortAsc      = true;
+let searchQuery  = '';
+
+// ── RENDER ───────────────────────────────────────────────────────────────────
+function render() {
+  const sq = searchQuery.toLowerCase();
+  let data = sections.filter(s => {
+    const typeOk  = activeType === 'all' || s.type === activeType;
+    const formOk  = activeForm === 'all' || s.form.includes(activeForm);
+    const payeeOk = activePayee === 'all' || s.payee.includes(activePayee);
+    const searchOk = !sq || s.code.toLowerCase().includes(sq) ||
+                     s.nature.toLowerCase().includes(sq) ||
+                     s.sec1961.toLowerCase().includes(sq) ||
+                     s.sec2025.toLowerCase().includes(sq) ||
+                     s.rate.toLowerCase().includes(sq) ||
+                     s.deductor.toLowerCase().includes(sq) ||
+                     s.payee.toLowerCase().includes(sq) ||
+                     s.threshold.toLowerCase().includes(sq);
+    return typeOk && formOk && payeeOk && searchOk;
+  });
+
+  data.sort((a,b) => {
+    let va = a[sortField] || '', vb = b[sortField] || '';
+    if (sortField === 'rate') { va = a.rateNum; vb = b.rateNum; return sortAsc ? va-vb : vb-va; }
+    return sortAsc ? String(va).localeCompare(String(vb)) : String(vb).localeCompare(String(va));
+  });
+
+  document.getElementById('shownCount').textContent = data.length;
+
+  const tbody = document.getElementById('tableBody');
+  const empty = document.getElementById('emptyState');
+  const table = document.getElementById('mainTable');
+
+  if (!data.length) { tbody.innerHTML=''; table.style.display='none'; empty.style.display='block'; return; }
+  table.style.display=''; empty.style.display='none';
+
+  let html = '', rowNum = 1;
+  data.forEach(s => {
+    const isHighRate = s.rateNum >= 20;
+    const rateClass  = s.rateNum >= 20 ? 'rate-high' : 'rate-normal';
+    const formParts  = s.form.split('/');
+    const formNewParts = s.formNew.split('/');
+    let formBadge = formParts.map((f,i) => `<span class="form-old">${f}</span>`).join(' ');
+    formBadge += ' → ' + formNewParts.map(f => `<span class="form-new">${f}</span>`).join(' ');
+
+    html += `<tr>
+      <td class="td-num">${rowNum++}</td>
+      <td><span class="type-badge type-${s.type.toLowerCase()}">${s.type}</span></td>
+      <td><span class="code-cell">${s.code}</span></td>
+      <td class="nature-cell">${s.nature}</td>
+      <td><span class="sec-old">${s.sec1961}</span></td>
+      <td><span class="sec-new">${s.sec2025}</span></td>
+      <td class="deductor-cell">${s.deductor}</td>
+      <td class="payee-cell">${s.payee}</td>
+      <td><span class="${rateClass}" style="font-weight:600;font-size:13px">${s.rate}</span></td>
+      <td class="threshold-cell">${s.threshold}</td>
+      <td><span class="form-badge">${formBadge}</span></td>
+      <td><button class="action-btn" title="Copy row" onclick="copyRow('${s.code.replace(/'/g,"\\'")}')">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      </button></td>
+    </tr>`;
+  });
+  tbody.innerHTML = html;
+  updateStats();
+  populateCalcDropdown(data);
+}
+
+function updateStats() {
+  document.getElementById('statTotal').textContent = sections.length;
+  document.getElementById('statTDS').textContent   = sections.filter(s=>s.type==='TDS').length;
+  document.getElementById('statTCS').textContent   = sections.filter(s=>s.type==='TCS').length;
+}
+
+// ── FILTERS ───────────────────────────────────────────────────────────────────
+function filterType(t, el) {
+  activeType = t;
+  document.querySelectorAll('[data-type]').forEach(p => p.classList.remove('active'));
+  if (el && el.dataset) el.classList.add('active');
+  else { document.querySelectorAll('[data-type]').forEach(p => { if(p.dataset.type===t) p.classList.add('active'); }); }
+  render();
+}
+
+function filterForm(f, el) {
+  // Normalise
+  if (f==='140') f='26Q'; if (f==='143') f='27Q'; if (f==='144') f='27EQ'; if (f==='138') f='24Q';
+  activeForm = f;
+  document.querySelectorAll('[data-form]').forEach(p => p.classList.remove('active'));
+  if (el && el.dataset) el.classList.add('active');
+  render();
+}
+
+function filterPayee(p, el) {
+  activePayee = p;
+  document.querySelectorAll('[data-payee]').forEach(x => x.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+// ── SORT ────────────────────────────────────────────────────────────────────
+function sortBy(field) {
+  if (sortField === field) sortAsc = !sortAsc;
+  else { sortField = field; sortAsc = true; }
+  document.querySelectorAll('[id^="si-"]').forEach(i => i.textContent = '');
+  const icon = document.getElementById('si-' + field);
+  if (icon) icon.textContent = sortAsc ? '▲' : '▼';
+  document.querySelectorAll('thead th').forEach(th => th.classList.remove('sorted'));
+  document.querySelectorAll('thead th').forEach(th => {
+    if (th.getAttribute('onclick') && th.getAttribute('onclick').includes(`'${field}'`)) th.classList.add('sorted');
+  });
+  render();
+}
+
+// ── RESET ───────────────────────────────────────────────────────────────────
+function resetAll() {
+  activeType='all'; activeForm='all'; activePayee='all'; searchQuery='';
+  document.getElementById('searchInput').value = '';
+  document.querySelectorAll('[data-type]').forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-type="all"]').classList.add('active');
+  document.querySelectorAll('[data-form]').forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-form="all"]').classList.add('active');
+  document.querySelectorAll('[data-payee]').forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-payee="all"]').classList.add('active');
+  document.querySelectorAll('.stat-item').forEach(s => s.classList.remove('active'));
+  render();
+}
+
+// ── COPY ROW ─────────────────────────────────────────────────────────────────
+function copyRow(code) {
+  const s = sections.find(x => x.code === code);
+  if (!s) return;
+  const text = `Code: ${s.code} | Type: ${s.type} | Nature: ${s.nature} | Old Sec: ${s.sec1961} | New Sec (2025): ${s.sec2025} | Rate: ${s.rate} | Threshold: ${s.threshold} | Form: ${s.form} → ${s.formNew}\n— S S Sancheti & Associates | CA Siddharth S. Sancheti`;
+  navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!'));
+}
+
+// ── EXPORT CSV ───────────────────────────────────────────────────────────────
+function exportCSV() {
+  const sq = searchQuery.toLowerCase();
+  let data = sections.filter(s => {
+    const typeOk  = activeType==='all' || s.type===activeType;
+    const formOk  = activeForm==='all' || s.form.includes(activeForm);
+    const payeeOk = activePayee==='all' || s.payee.includes(activePayee);
+    const searchOk= !sq || s.code.toLowerCase().includes(sq)||s.nature.toLowerCase().includes(sq)||s.sec1961.toLowerCase().includes(sq);
+    return typeOk&&formOk&&payeeOk&&searchOk;
+  });
+  const header = ['Type','Code','Nature of Payment','Old Section (1961)','New Section (2025)','Deductor/Collector','Payee/Deductee','Rate','Threshold','Form (Old)','Form (New)'];
+  const rows   = data.map(s => [s.type,s.code,`"${s.nature}"`,s.sec1961,s.sec2025,`"${s.deductor}"`,`"${s.payee}"`,s.rate,`"${s.threshold}"`,s.form,s.formNew]);
+  const csv    = [header.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const blob   = new Blob([csv], {type:'text/csv'});
+  const url    = URL.createObjectURL(blob);
+  const a      = document.createElement('a'); a.href=url; a.download='TDS_TCS_Sections_SSS.csv'; a.click();
+  URL.revokeObjectURL(url);
+  showToast('CSV exported!');
+}
+
+// ── CALCULATOR ───────────────────────────────────────────────────────────────
+function populateCalcDropdown(data) {
+  const sel = document.getElementById('calcSection');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">— Select Section Code —</option>';
+  data.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.code; opt.textContent = `${s.code} — ${s.nature.substring(0,50)}`;
+    sel.appendChild(opt);
+  });
+  if (cur) sel.value = cur;
+}
+
+function calculate() {
+  const code   = document.getElementById('calcSection').value;
+  const amount = parseFloat(document.getElementById('calcAmount').value);
+  const hasPAN = document.getElementById('calcPAN').value === 'yes';
+  const res    = document.getElementById('calcResult');
+
+  if (!code || !amount || amount <= 0) { showToast('Please select a section and enter an amount.'); return; }
+  const sec = sections.find(s => s.code === code);
+  if (!sec) return;
+
+  let rate = sec.rateNum;
+  let rateLabel = sec.rate;
+  if (!hasPAN && sec.highRate) { rate = Math.max(rate, sec.highRate); rateLabel = `${rate}% (higher rate — no PAN)`; }
+  if (rate === 0) {
+    res.innerHTML = `<div class="res-row"><span>Note</span><span>Slab rate applicable. Refer tax computation for actual TDS amount.</span></div>`;
+    res.classList.add('show'); return;
+  }
+  const tdsAmt = (amount * rate / 100).toFixed(2);
+  const netAmt = (amount - parseFloat(tdsAmt)).toFixed(2);
+  res.innerHTML = `
+    <div class="res-row"><span>Gross Amount</span><span>₹ ${amount.toLocaleString('en-IN',{minimumFractionDigits:2})}</span></div>
+    <div class="res-row"><span>Rate Applied</span><span>${rateLabel}</span></div>
+    <div class="res-row" style="font-weight:700"><span>${sec.type} Amount</span><span>₹ ${parseFloat(tdsAmt).toLocaleString('en-IN',{minimumFractionDigits:2})}</span></div>
+    <div class="res-row"><span>Net Payable (after ${sec.type})</span><span>₹ ${parseFloat(netAmt).toLocaleString('en-IN',{minimumFractionDigits:2})}</span></div>
+    <div style="font-size:10.5px;color:var(--text-light);margin-top:8px">⚠️ Verify applicable surcharge and cess for non-residents. DTAA may reduce rate for NR payees.</div>
+  `;
+  res.classList.add('show');
+}
+
+// ── TOAST ────────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── SEARCH ───────────────────────────────────────────────────────────────────
+document.getElementById('searchInput').addEventListener('input', function() {
+  searchQuery = this.value.trim(); render();
+});
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey||e.metaKey) && e.key==='f') { e.preventDefault(); document.getElementById('searchInput').focus(); }
+  if (e.key==='Escape') { document.getElementById('calcModal').classList.remove('open'); }
+});
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
