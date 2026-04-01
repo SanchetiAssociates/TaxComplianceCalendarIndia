@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compliance Calendar FY 2026-27 — S S Sancheti & Associates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0D1B35;
+    --navy-light: #162447;
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --cream: #F8F5EF;
+    --cream-dark: #EDE8DE;
+    --white: #FFFFFF;
+    --text-dark: #0D1B35;
+    --text-mid: #4A5568;
+    --text-light: #718096;
+
+    --gst: #1D6FA4;
+    --gst-bg: #EBF5FB;
+    --tds: #6B3FA0;
+    --tds-bg: #F3EEF9;
+    --pf: #1B7A4C;
+    --pf-bg: #E8F5EE;
+    --it: #C0392B;
+    --it-bg: #FCECEA;
+    --co: #B7600D;
+    --co-bg: #FEF3E7;
+    --other: #4A5568;
+    --other-bg: #EDF2F7;
+
+    --status-overdue: #C0392B;
+    --status-critical: #E67E22;
+    --status-urgent: #F39C12;
+    --status-upcoming: #2980B9;
+    --status-ok: #27AE60;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  .site-header {
+    background: var(--navy);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 28px;
+    border-bottom: 1px solid rgba(201,168,76,0.25);
+  }
+
+  .firm-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .firm-logo-circle {
+    width: 46px; height: 46px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--navy);
+    letter-spacing: -0.5px;
+    flex-shrink: 0;
+  }
+
+  .firm-name-block h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+  }
+
+  .firm-name-block p {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .today-badge {
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    color: var(--gold-light);
+    font-weight: 500;
+  }
+
+  .search-wrapper {
+    position: relative;
+  }
+
+  .search-wrapper svg {
+    position: absolute;
+    left: 10px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold);
+    width: 14px; height: 14px;
+  }
+
+  #searchInput {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 7px 14px 7px 32px;
+    color: white;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    width: 220px;
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  #searchInput::placeholder { color: rgba(255,255,255,0.35); }
+  #searchInput:focus {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(201,168,76,0.5);
+    width: 260px;
+  }
+
+  .print-btn {
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.5);
+    color: var(--gold);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .print-btn:hover {
+    background: rgba(201,168,76,0.15);
+    border-color: var(--gold);
+  }
+
+  .header-bottom {
+    padding: 10px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .calendar-title {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .calendar-title h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.2px;
+  }
+
+  .calendar-title span {
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .prepared-by {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.3px;
+  }
+
+  .prepared-by strong {
+    color: var(--gold-light);
+    font-weight: 500;
+  }
+
+  /* ─── STAT TILES ─── */
+  .stats-strip {
+    background: var(--navy-light);
+    padding: 14px 28px;
+    display: flex;
+    gap: 12px;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .stat-tile {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    min-width: 0;
+  }
+
+  .stat-tile:hover { background: rgba(255,255,255,0.09); }
+  .stat-tile.active { background: rgba(201,168,76,0.15); border-color: rgba(201,168,76,0.4); }
+
+  .stat-tile .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+
+  .stat-tile.overdue .num { color: #FF6B6B; }
+  .stat-tile.critical .num { color: #FFA07A; }
+  .stat-tile.upcoming .num { color: #87CEEB; }
+
+  .stat-tile .label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* ─── FILTERS ─── */
+  .filters-section {
+    background: var(--white);
+    padding: 12px 28px;
+    border-bottom: 1px solid var(--cream-dark);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .filter-label {
+    font-size: 11px;
+    color: var(--text-light);
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: all 0.15s;
+    background: var(--cream);
+    color: var(--text-mid);
+    border-color: var(--cream-dark);
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .pill:hover { border-color: var(--navy); color: var(--navy); }
+  .pill.active {
+    background: var(--navy);
+    color: white;
+    border-color: var(--navy);
+  }
+
+  .pill.cat-gst.active { background: var(--gst); border-color: var(--gst); }
+  .pill.cat-tds.active { background: var(--tds); border-color: var(--tds); }
+  .pill.cat-pf.active { background: var(--pf); border-color: var(--pf); }
+  .pill.cat-it.active { background: var(--it); border-color: var(--it); }
+  .pill.cat-co.active { background: var(--co); border-color: var(--co); }
+  .pill.cat-other.active { background: var(--other); border-color: var(--other); }
+
+  .divider { width: 1px; height: 20px; background: var(--cream-dark); margin: 0 4px; }
+
+  /* ─── MONTH PILLS ─── */
+  .month-filters {
+    background: var(--cream);
+    padding: 10px 28px;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--cream-dark);
+    scrollbar-width: none;
+  }
+  .month-filters::-webkit-scrollbar { display: none; }
+
+  .month-pill {
+    flex-shrink: 0;
+    padding: 5px 13px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1.5px solid var(--cream-dark);
+    background: white;
+    color: var(--text-mid);
+    transition: all 0.15s;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .month-pill:hover { border-color: var(--navy); color: var(--navy); }
+  .month-pill.active { background: var(--navy); color: white; border-color: var(--navy); }
+
+  /* ─── RESULTS BAR ─── */
+  .results-bar {
+    padding: 10px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--cream);
+    border-bottom: 1px solid var(--cream-dark);
+  }
+
+  .results-count {
+    font-size: 13px;
+    color: var(--text-mid);
+    font-weight: 500;
+  }
+
+  .results-count strong {
+    color: var(--text-dark);
+    font-size: 15px;
+  }
+
+  .active-filters {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .filter-tag {
+    background: var(--navy);
+    color: white;
+    font-size: 11px;
+    padding: 3px 8px 3px 10px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .filter-tag button {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1;
+    padding: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .filter-tag button:hover { color: white; }
+
+  /* ─── TABLE ─── */
+  .table-container {
+    padding: 0 28px 40px;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    margin-top: 16px;
+  }
+
+  thead th {
+    background: var(--navy);
+    color: rgba(255,255,255,0.8);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    padding: 12px 14px;
+    text-align: left;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    position: sticky;
+    top: 0;
+  }
+
+  thead th:hover { color: var(--gold); }
+  thead th.sorted { color: var(--gold); }
+
+  thead th .sort-icon { margin-left: 4px; opacity: 0.5; font-size: 10px; }
+  thead th.sorted .sort-icon { opacity: 1; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--cream-dark);
+    transition: background 0.12s;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--cream); }
+
+  /* Month separator row */
+  tr.month-sep td {
+    background: var(--navy-light);
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 14px;
+    letter-spacing: 0.5px;
+  }
+
+  tr.month-sep td .sep-count {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    margin-left: 8px;
+    font-weight: 400;
+  }
+
+  td {
+    padding: 11px 14px;
+    font-size: 13px;
+    color: var(--text-dark);
+    vertical-align: middle;
+  }
+
+  .td-date {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    color: var(--text-mid);
+    min-width: 90px;
+  }
+
+  .td-date .day-num {
+    font-size: 18px;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+    display: block;
+  }
+
+  .td-date .month-yr {
+    font-size: 10px;
+    color: var(--text-light);
+    letter-spacing: 0.3px;
+  }
+
+  .td-compliance {
+    font-weight: 500;
+    font-size: 13.5px;
+    min-width: 250px;
+  }
+
+  .td-period {
+    color: var(--text-mid);
+    font-size: 12px;
+    min-width: 140px;
+  }
+
+  /* Category badge */
+  .cat-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+
+  .cat-badge.GST { background: var(--gst-bg); color: var(--gst); }
+  .cat-badge.TDSTCS { background: var(--tds-bg); color: var(--tds); }
+  .cat-badge.PFESIC { background: var(--pf-bg); color: var(--pf); }
+  .cat-badge.IncomeTax { background: var(--it-bg); color: var(--it); }
+  .cat-badge.CompanyLaw { background: var(--co-bg); color: var(--co); }
+  .cat-badge.Other { background: var(--other-bg); color: var(--other); }
+
+  /* Status badge */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .status-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .status-overdue { background: #FEE2E2; color: var(--status-overdue); }
+  .status-overdue::before { background: var(--status-overdue); }
+  .status-critical { background: #FEF3C7; color: #92400E; }
+  .status-critical::before { background: var(--status-critical); }
+  .status-urgent { background: #FEF9C3; color: #713F12; }
+  .status-urgent::before { background: var(--status-urgent); }
+  .status-upcoming { background: #DBEAFE; color: #1E40AF; }
+  .status-upcoming::before { background: var(--status-upcoming); }
+  .status-ok { background: #DCFCE7; color: #14532D; }
+  .status-ok::before { background: var(--status-ok); }
+
+  /* Actions */
+  .td-actions { white-space: nowrap; }
+
+  .action-btn {
+    background: none;
+    border: 1px solid var(--cream-dark);
+    border-radius: 7px;
+    width: 30px; height: 30px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    font-size: 13px;
+    transition: all 0.15s;
+    margin-right: 4px;
+  }
+
+  .action-btn:hover {
+    background: var(--cream);
+    border-color: var(--navy);
+    color: var(--navy);
+  }
+
+  .action-btn.copied {
+    background: var(--pf-bg);
+    border-color: var(--pf);
+    color: var(--pf);
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-light);
+  }
+
+  .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-state p { font-size: 15px; }
+
+  /* ─── FOOTER ─── */
+  .site-footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+    padding: 20px 28px;
+    font-size: 11.5px;
+    line-height: 1.8;
+  }
+
+  .site-footer .footer-brand {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold);
+    font-size: 13px;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .site-footer .disclaimer {
+    color: rgba(255,255,255,0.3);
+    font-size: 10.5px;
+    max-width: 700px;
+    margin: 6px auto 0;
+    line-height: 1.6;
+  }
+
+  /* ─── LEGEND ─── */
+  .legend-bar {
+    background: white;
+    padding: 10px 28px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+
+  .legend-label {
+    font-size: 11px;
+    color: var(--text-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    color: var(--text-mid);
+  }
+
+  .legend-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ─── TOAST ─── */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--navy);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    transform: translateY(60px);
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 999;
+    border-left: 3px solid var(--gold);
+  }
+
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* ─── PRINT ─── */
+  @media print {
+    .site-header { position: static; }
+    .stats-strip, .filters-section, .month-filters, .results-bar, .legend-bar { display: none !important; }
+    .table-container { padding: 0; }
+    table { box-shadow: none; }
+    .td-actions { display: none; }
+    .site-footer { background: white; color: #333; }
+    .site-footer .footer-brand { color: var(--navy); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .header-top { flex-wrap: wrap; gap: 10px; }
+    .stats-strip { overflow-x: auto; }
+    .stat-tile .num { font-size: 20px; }
+    .table-container { padding: 0 12px 28px; }
+    #searchInput { width: 160px; }
+    .header-meta { gap: 10px; }
+    .today-badge { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-top">
+    <div class="firm-brand">
+      <div class="firm-logo-circle">SS</div>
+      <div class="firm-name-block">
+        <h1>S S Sancheti &amp; Associates</h1>
+        <p>Chartered Accountants · Mumbai</p>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div class="today-badge" id="todayBadge">Today: —</div>
+      <div class="search-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Search compliance…" autocomplete="off">
+      </div>
+      <button class="print-btn" onclick="window.print()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+          <rect x="6" y="14" width="12" height="8"/>
+        </svg>
+        Print / PDF
+      </button>
+    </div>
+  </div>
+  <div class="header-bottom">
+    <div class="calendar-title">
+      <h2>Statutory Compliance Calendar</h2>
+      <span>FY 2026–27 &nbsp;·&nbsp; April 2026 – March 2027</span>
+    </div>
+    <div class="prepared-by">Prepared by &nbsp;<strong>CA. Siddharth S. Sancheti</strong></div>
+  </div>
+</header>
+
+<!-- STAT TILES -->
+<div class="stats-strip" id="statsStrip">
+  <div class="stat-tile" data-filter="all" onclick="toggleStatFilter(this,'all')">
+    <div class="num" id="totalCount">—</div>
+    <div class="label">Total</div>
+  </div>
+  <div class="stat-tile overdue" data-filter="overdue" onclick="toggleStatFilter(this,'overdue')">
+    <div class="num" id="overdueCount">—</div>
+    <div class="label">Overdue</div>
+  </div>
+  <div class="stat-tile critical" data-filter="critical" onclick="toggleStatFilter(this,'critical')">
+    <div class="num" id="criticalCount">—</div>
+    <div class="label">Due in 7 Days</div>
+  </div>
+  <div class="stat-tile upcoming" data-filter="upcoming" onclick="toggleStatFilter(this,'upcoming')">
+    <div class="num" id="upcomingCount">—</div>
+    <div class="label">Upcoming (30d)</div>
+  </div>
+</div>
+
+<!-- CATEGORY FILTERS -->
+<div class="filters-section">
+  <span class="filter-label">Category</span>
+  <span class="pill active" data-cat="all" onclick="toggleCat(this,'all')">All</span>
+  <span class="pill cat-gst" data-cat="GST" onclick="toggleCat(this,'GST')">GST</span>
+  <span class="pill cat-tds" data-cat="TDS/TCS" onclick="toggleCat(this,'TDS/TCS')">TDS / TCS</span>
+  <span class="pill cat-pf" data-cat="PF/ESIC" onclick="toggleCat(this,'PF/ESIC')">PF / ESIC</span>
+  <span class="pill cat-it" data-cat="Income Tax" onclick="toggleCat(this,'Income Tax')">Income Tax</span>
+  <span class="pill cat-co" data-cat="Company Law" onclick="toggleCat(this,'Company Law')">Company Law</span>
+  <span class="pill cat-other" data-cat="Other" onclick="toggleCat(this,'Other')">Other</span>
+  <div class="divider"></div>
+  <span class="filter-label">Status</span>
+  <span class="pill" data-status="overdue" onclick="toggleStatPill(this,'overdue')">Overdue</span>
+  <span class="pill" data-status="upcoming30" onclick="toggleStatPill(this,'upcoming30')">Next 30 days</span>
+</div>
+
+<!-- MONTH FILTERS -->
+<div class="month-filters">
+  <span class="month-pill active" data-m="all" onclick="toggleMonth(this,'all')">All Months</span>
+  <span class="month-pill" data-m="2026-04" onclick="toggleMonth(this,'2026-04')">Apr 2026</span>
+  <span class="month-pill" data-m="2026-05" onclick="toggleMonth(this,'2026-05')">May 2026</span>
+  <span class="month-pill" data-m="2026-06" onclick="toggleMonth(this,'2026-06')">Jun 2026</span>
+  <span class="month-pill" data-m="2026-07" onclick="toggleMonth(this,'2026-07')">Jul 2026</span>
+  <span class="month-pill" data-m="2026-08" onclick="toggleMonth(this,'2026-08')">Aug 2026</span>
+  <span class="month-pill" data-m="2026-09" onclick="toggleMonth(this,'2026-09')">Sep 2026</span>
+  <span class="month-pill" data-m="2026-10" onclick="toggleMonth(this,'2026-10')">Oct 2026</span>
+  <span class="month-pill" data-m="2026-11" onclick="toggleMonth(this,'2026-11')">Nov 2026</span>
+  <span class="month-pill" data-m="2026-12" onclick="toggleMonth(this,'2026-12')">Dec 2026</span>
+  <span class="month-pill" data-m="2027-01" onclick="toggleMonth(this,'2027-01')">Jan 2027</span>
+  <span class="month-pill" data-m="2027-02" onclick="toggleMonth(this,'2027-02')">Feb 2027</span>
+  <span class="month-pill" data-m="2027-03" onclick="toggleMonth(this,'2027-03')">Mar 2027</span>
+</div>
+
+<!-- RESULTS BAR -->
+<div class="results-bar">
+  <div class="results-count">Showing <strong id="shownCount">—</strong> compliance deadlines</div>
+  <div class="active-filters" id="activeFiltersBar"></div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend-bar">
+  <span class="legend-label">Status</span>
+  <div class="legend-item"><div class="legend-dot" style="background:#C0392B"></div>Overdue</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#E67E22"></div>Critical (≤3 days)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#F39C12"></div>Urgent (4–7 days)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#2980B9"></div>Upcoming (8–30 days)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#27AE60"></div>OK (&gt;30 days)</div>
+</div>
+
+<!-- TABLE -->
+<div class="table-container">
+  <table id="mainTable">
+    <thead>
+      <tr>
+        <th onclick="sortBy('date')" title="Sort by date">Due Date <span class="sort-icon" id="sort-date">▲</span></th>
+        <th>Compliance / Filing</th>
+        <th>Period</th>
+        <th onclick="sortBy('category')" title="Sort by category">Category <span class="sort-icon" id="sort-category"></span></th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+  <div class="empty-state" id="emptyState" style="display:none">
+    <div class="icon">📋</div>
+    <p>No compliances match your current filters.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-brand">S S Sancheti &amp; Associates · Chartered Accountants</div>
+  <div>Mumbai &nbsp;|&nbsp; Compiled by CA. Siddharth S. Sancheti &nbsp;|&nbsp; FY 2026–27</div>
+  <div class="disclaimer">
+    This calendar is compiled for general reference purposes only. Due dates are based on information available as of April 2026 and may be subject to extensions or amendments by CBDT, CBIC, EPFO, ESIC, MCA or other authorities. Always verify dates against official notifications before reliance. S S Sancheti &amp; Associates does not accept liability for any action taken solely on the basis of this calendar.
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────
+const compliances = [
+  // APRIL 2026
+  { id:1,  date:"2026-04-07", name:"TDS Payment — Government Deductors", period:"March 2026", category:"TDS/TCS" },
+  { id:2,  date:"2026-04-10", name:"GSTR-7 Filing (TDS under GST)", period:"March 2026", category:"GST" },
+  { id:3,  date:"2026-04-10", name:"GSTR-8 Filing (E-Commerce TCS)", period:"March 2026", category:"GST" },
+  { id:4,  date:"2026-04-11", name:"GSTR-1 Filing (Monthly)", period:"March 2026", category:"GST" },
+  { id:5,  date:"2026-04-13", name:"IFF Filing — QRMP Scheme (Month 3)", period:"Jan–Mar 2026", category:"GST" },
+  { id:6,  date:"2026-04-15", name:"PF Contribution Payment", period:"March 2026", category:"PF/ESIC" },
+  { id:7,  date:"2026-04-15", name:"ESIC Contribution Payment", period:"March 2026", category:"PF/ESIC" },
+  { id:8,  date:"2026-04-20", name:"GSTR-3B Filing (Turnover > ₹5 Cr)", period:"March 2026", category:"GST" },
+  { id:9,  date:"2026-04-22", name:"GSTR-3B — QRMP Category I States", period:"Q4 Jan–Mar 2026", category:"GST" },
+  { id:10, date:"2026-04-24", name:"GSTR-3B — QRMP Category II States", period:"Q4 Jan–Mar 2026", category:"GST" },
+  { id:11, date:"2026-04-30", name:"TDS Payment — Non-Government Deductors", period:"March 2026", category:"TDS/TCS" },
+  { id:12, date:"2026-04-30", name:"Challan-cum-Statement — Sec 194-IA / 194-IB / 194-IC / 194M", period:"March 2026", category:"Income Tax" },
+
+  // MAY 2026
+  { id:13, date:"2026-05-07", name:"TDS / TCS Payment", period:"April 2026", category:"TDS/TCS" },
+  { id:14, date:"2026-05-10", name:"GSTR-7 Filing (TDS under GST)", period:"April 2026", category:"GST" },
+  { id:15, date:"2026-05-10", name:"GSTR-8 Filing (E-Commerce TCS)", period:"April 2026", category:"GST" },
+  { id:16, date:"2026-05-11", name:"GSTR-1 Filing (Monthly)", period:"April 2026", category:"GST" },
+  { id:17, date:"2026-05-13", name:"IFF Filing — QRMP Scheme (Month 1)", period:"Apr–Jun 2026", category:"GST" },
+  { id:18, date:"2026-05-15", name:"PF Contribution Payment", period:"April 2026", category:"PF/ESIC" },
+  { id:19, date:"2026-05-15", name:"ESIC Contribution Payment", period:"April 2026", category:"PF/ESIC" },
+  { id:20, date:"2026-05-15", name:"TCS Return — Form 27EQ", period:"Q4 FY 2025-26", category:"TDS/TCS" },
+  { id:21, date:"2026-05-20", name:"GSTR-3B Filing (Turnover > ₹5 Cr)", period:"April 2026", category:"GST" },
+  { id:22, date:"2026-05-30", name:"TDS Certificate — Form 16B / 16C / 16D", period:"March 2026 (194-IA/IB/M)", category:"TDS/TCS" },
+  { id:23, date:"2026-05-31", name:"TDS Return — Form 24Q / 26Q / 27Q", period:"Q4 FY 2025-26", category:"TDS/TCS" },
+
+  // JUNE 2026
+  { id:24, date:"2026-06-07", name:"TDS / TCS Payment", period:"May 2026", category:"TDS/TCS" },
+  { id:25, date:"2026-06-10", name:"GSTR-7 Filing (TDS under GST)", period:"May 2026", category:"GST" },
+  { id:26, date:"2026-06-10", name:"GSTR-8 Filing (E-Commerce TCS)", period:"May 2026", category:"GST" },
+  { id:27, date:"2026-06-11", name:"GSTR-1 Filing (Monthly)", period:"May 2026", category:"GST" },
+  { id:28, date:"2026-06-13", name:"IFF Filing — QRMP Scheme (Month 2)", period:"Apr–Jun 2026", category:"GST" },
+  { id:29, date:"2026-06-15", name:"Advance Tax — 1st Instalment (15%)", period:"AY 2027-28", category:"Income Tax" },
+  { id:30, date:"2026-06-15", name:"PF Contribution Payment", period:"May 2026", category:"PF/ESIC" },
+  { id:31, date:"2026-06-15", name:"ESIC Contribution Payment", period:"May 2026", category:"PF/ESIC" },
+  { id:32, date:"2026-06-15", name:"Form 16 — TDS Certificate on Salary", period:"FY 2025-26", category:"TDS/TCS" },
+  { id:33, date:"2026-06-15", name:"TDS Certificate — Form 16A", period:"Q4 FY 2025-26", category:"TDS/TCS" },
+  { id:34, date:"2026-06-20", name:"GSTR-3B Filing (Turnover > ₹5 Cr)", period:"May 2026", category:"GST" },
+  { id:35, date:"2026-06-22", name:"GSTR-3B — QRMP Category I States", period:"May 2026 (Q1 partial)", category:"GST" },
+  { id:36, date:"2026-06-30", name:"DIR-3 KYC — Annual KYC for Directors", period:"FY 2025-26", category:"Company Law" },
+
+  // JULY 2026
+  { id:37, date:"2026-07-07", name:"TDS / TCS Payment", period:"June 2026", category:"TDS/TCS" },
+  { id:38, date:"2026-07-10", name:"GSTR-7 Filing (TDS under GST)", period:"June 2026", category:"GST" },
+  { id:39, date:"2026-07-10", name:"GSTR-8 Filing (E-Commerce TCS)", period:"June 2026", category:"GST" },
+  { id:40, date:"2026-07-11", name:"GSTR-1 Filing (Monthly)", period:"June 2026", category:"GST" },
+  { id:41, date:"2026-07-13", name:"IFF Filing — QRMP Scheme (Month 3)", period:"Apr–Jun 2026", category:"GST" },
+  { id:42, date:"2026-07-15", name:"PF Contribution Payment", period:"June 2026", category:"PF/ESIC" },
+  { id:43, date:"2026-07-15", name:"ESIC Contribution Payment", period:"June 2026", category:"PF/ESIC" },
+  { id:44, date:"2026-07-20", name:"GSTR-3B Filing (Turnover > ₹5 Cr)", period:"June 2026", category:"GST" },
+  { id:45, date:"2026-07-22", name:"GSTR-3B — QRMP Category I States", period:"Q1 Apr–Jun 2026", category:"GST" },
+  { id:46, date:"2026-07-24", name:"GSTR-3B — QRMP Category II States", period:"Q1 Apr–Jun 2026", category:"GST" },
+  { id:47, date:"2026-07-31", name:"TDS Return — Form 24Q / 26Q / 27Q", period:"Q1 FY 2026-27", category:"TDS/TCS" },
+  { id:48, date:"2026-07-31", name:"ITR Filing — Non-Audit (Individuals / HUF / Firms)", period:"AY 2026-27", category:"Income Tax" },
+
+  // AUGUST 2026
+  { id:49, date:"2026-08-07", name:"TDS / TCS Payment", period:"July 2026", category:"TDS/TCS" },
+  { id:50, date:"2026-08-10", name:"GSTR-7 Filing (TDS under GST)", period:"July 2026", category:"GST" },
+  { id:51, date:"2026-08-10", name:"GSTR-8 Filing (E-Commerce TCS)", period:"July 2026", category:"GST" },
+  { id:52, date:"2026-08-11", name:"GSTR-1 Filing (Monthly)", period:"July 2026", category:"GST" },
+  { id:53, date:"2026-08-13", name:"IFF Filing — QRMP Scheme (Month 1)", period:"Jul–Sep 2026", category:"GST" },
+  { id:54, date:"2026-08-15", name:"PF Contribution Payment", period:"July 2026", category:"PF/ESIC" },
+  { id:55, date:"2026-08-15", name:"ESIC Contribution Payment", period:"July 2026", category:"PF/ESIC" },
+  { id:56, date:"2026-08-15", name:"TDS Certificate — Form 16A", period:"Q1 FY 2026-27", category:"TDS/TCS" },
+  { id:57, date:"2026-08-20", name:"GSTR-3B Filing (Turnover > ₹5 Cr)", period:"July 2026", category:"GST" },
+
+  // SEPTEMBER 2026
+  { id:58, date:"2026-09-07", name:"TDS / TCS Payment", period:"August 2026", category:"TDS/TCS" },
+  { id:59, date:"2026-09-10", name:"GSTR-7 Filing (TDS under GST)", period:"August 2026", category:"GST" },
+  { id:60, date:"2026-09-10", name:"GSTR-8 Filing (E-Commerce TCS)", period:"August 2026", category:"GST" },
+  { id:61, date:"2026-09-11", name:"GSTR-1 Filing (Monthly)", period:"August 2026", category:"GST" },
+  { id:62, date:"2026-09-13", name:"IFF Filing — QRMP Scheme (Month 2)", period:"Jul–Sep 2026", category:"GST" },
+  { id:63, date:"2026-09-15", name:"Advance Tax — 2nd Instalment (45% cumulative)", period:"AY 2027-28", category:"Income Tax" },
+  { id:64, date:"2026-09-15", name:"PF Contribution Payment", period:"August 2026", category:"PF/ESIC" },
+  { id:65, date:"2026-09-15", name:"ESIC Contribution Payment", period:"August 2026", category:"PF/ESIC" },
+  { id:66, date:"2026-09-20", name:"GSTR-3B Filing (Turnover > ₹5 Cr)", period:"August 2026", category:"GST" },
+  { id:67, date:"2026-09-30", name:"Tax Audit Report — Form 3CA/3CB &amp; 3CD", period:"AY 2026-27", category:"Income Tax" },
+  { id:68, date:"2026-09-30", name:"ITR Filing — Audit Cases (Companies, LLPs, Firms)", period:"AY 2026-27", category:"Income Tax" },
+  { id:69, date:"2026-09-30", name:"Annual General Meeting (AGM) — Default Deadline", period:"FY 2025-26", category:"Company Law" },
+  { id:70, date:"2026-09-30", name:"DIR-3 KYC — Annual KYC for Directors", period:"FY 2025-26 (30 Sep deadline)", category:"Company Law" },
+
+  // OCTOBER 2026
+  { id:71, date:"2026-10-07", name:"TDS / TCS Payment", period:"September 2026", category:"TDS/TCS" },
+  { id:72, date:"2026-10-10", name:"GSTR-7 Filing (TDS under GST)", period:"September 2026", category:"GST" },
+  { id:73, date:"2026-10-10", name:"GSTR-8 Filing (E-Commerce TCS)", period:"September 2026", category:"GST" },
+  { id:74, date:"2026-10-11", name:"GSTR-1 Filing (Monthly)", period:"September 2026", category:"GST" },
+  { id:75, date:"2026-10-13", name:"IFF Filing — QRMP Scheme (Month 3)", period:"Jul–Sep 2026", category:"GST" },
+  { id:76, date:"2026-10-15", name:"ADT-1 — Auditor Appointment Form", period:"FY 2025-26 (within 15 days of AGM)", category:"Company Law" },
+  { id:77, date:"2026-10-15", name:"PF Contribution Payment", period:"September 2026", category:"PF/ESIC" },
+  { id:78, date:"2026-10-15", name:"ESIC Contribution Payment", period:"September 2026", category:"PF/ESIC" },
+  { id:79, date:"2026-10-15", name:"TCS Return — Form 27EQ", period:"Q2 FY 2026-27", category:"TDS/TCS" },
+  { id:80, date:"2026-10-20", name:"GSTR-3B Filing (Turnover > ₹5 Cr)", period:"September 2026", category:"GST" },
+  { id:81, date:"2026-10-22", name:"GSTR-3B — QRMP Category I States", period:"Q2 Jul–Sep 2026", category:"GST" },
+  { id:82, date:"2026-10-24", name:"GSTR-3B — QRMP Category II States", period:"Q2 Jul–Sep 2026", category:"GST" },
+  { id:83, date:"2026-10-30", name:"AOC-4 — Form for Financial Statements", period:"FY 2025-26 (within 30 days of AGM)", category:"Company Law" },
+  { id:84, date:"2026-10-31", name:"TDS Return — Form 24Q / 26Q / 27Q", period:"Q2 FY 2026-27", category:"TDS/TCS" },
+  { id:85, date:"2026-10-31", name:"ITR — International Transactions / Transfer Pricing", period:"AY 2026-27", category:"Income Tax" },
+
+  // NOVEMBER 2026
+  { id:86, date:"2026-11-07", name:"TDS / TCS Payment", period:"October 2026", category:"TDS/TCS" },
+  { id:87, date:"2026-11-10", name:"GSTR-7 Filing (TDS under GST)", period:"October 2026", category:"GST" },
+  { id:88, date:"2026-11-10", name:"GSTR-8 Filing (E-Commerce TCS)", period:"October 2026", category:"GST" },
+  { id:89, date:"2026-11-11", name:"GSTR-1 Filing (Monthly)", period:"October 2026", category:"GST" },
+  { id:90, date:"2026-11-13", name:"IFF Filing — QRMP Scheme (Month 1)", period:"Oct–Dec 2026", category:"GST" },
+  { id:91, date:"2026-11-15", name:"PF Contribution Payment", period:"October 2026", category:"PF/ESIC" },
+  { id:92, date:"2026-11-15", name:"ESIC Contribution Payment", period:"October 2026", category:"PF/ESIC" },
+  { id:93, date:"2026-11-15", name:"TDS Certificate — Form 16A", period:"Q2 FY 2026-27", category:"TDS/TCS" },
+  { id:94, date:"2026-11-20", name:"GSTR-3B Filing (Turnover > ₹5 Cr)", period:"October 2026", category:"GST" },
+  { id:95, date:"2026-11-29", name:"MGT-7 / MGT-7A — Annual Return Filing", period:"FY 2025-26 (within 60 days of AGM)", category:"Company Law" },
+
+  // DECEMBER 2026
+  { id:96,  date:"2026-12-07", name:"TDS / TCS Payment", period:"November 2026", category:"TDS/TCS" },
+  { id:97,  date:"2026-12-10", name:"GSTR-7 Filing (TDS under GST)", period:"November 2026", category:"GST" },
+  { id:98,  date:"2026-12-10", name:"GSTR-8 Filing (E-Commerce TCS)", period:"November 2026", category:"GST" },
+  { id:99,  date:"2026-12-11", name:"GSTR-1 Filing (Monthly)", period:"November 2026", category:"GST" },
+  { id:100, date:"2026-12-13", name:"IFF Filing — QRMP Scheme (Month 2)", period:"Oct–Dec 2026", category:"GST" },
+  { id:101, date:"2026-12-15", name:"Advance Tax — 3rd Instalment (75% cumulative)", period:"AY 2027-28", category:"Income Tax" },
+  { id:102, date:"2026-12-15", name:"PF Contribution Payment", period:"November 2026", category:"PF/ESIC" },
+  { id:103, date:"2026-12-15", name:"ESIC Contribution Payment", period:"November 2026", category:"PF/ESIC" },
+  { id:104, date:"2026-12-20", name:"GSTR-3B Filing (Turnover > ₹5 Cr)", period:"November 2026", category:"GST" },
+  { id:105, date:"2026-12-31", name:"GSTR-9 — Annual Return Filing", period:"FY 2025-26", category:"GST" },
+  { id:106, date:"2026-12-31", name:"GSTR-9C — Reconciliation Statement (Audit)", period:"FY 2025-26", category:"GST" },
+  { id:107, date:"2026-12-31", name:"Belated / Revised ITR Filing", period:"AY 2026-27", category:"Income Tax" },
+  { id:108, date:"2026-12-31", name:"Updated Return — ITR-U (2 years window)", period:"AY 2024-25", category:"Income Tax" },
+
+  // JANUARY 2027
+  { id:109, date:"2027-01-07", name:"TDS / TCS Payment", period:"December 2026", category:"TDS/TCS" },
+  { id:110, date:"2027-01-10", name:"GSTR-7 Filing (TDS under GST)", period:"December 2026", category:"GST" },
+  { id:111, date:"2027-01-10", name:"GSTR-8 Filing (E-Commerce TCS)", period:"December 2026", category:"GST" },
+  { id:112, date:"2027-01-11", name:"GSTR-1 Filing (Monthly)", period:"December 2026", category:"GST" },
+  { id:113, date:"2027-01-13", name:"IFF Filing — QRMP Scheme (Month 3)", period:"Oct–Dec 2026", category:"GST" },
+  { id:114, date:"2027-01-15", name:"PF Contribution Payment", period:"December 2026", category:"PF/ESIC" },
+  { id:115, date:"2027-01-15", name:"ESIC Contribution Payment", period:"December 2026", category:"PF/ESIC" },
+  { id:116, date:"2027-01-15", name:"TCS Return — Form 27EQ", period:"Q3 FY 2026-27", category:"TDS/TCS" },
+  { id:117, date:"2027-01-20", name:"GSTR-3B Filing (Turnover > ₹5 Cr)", period:"December 2026", category:"GST" },
+  { id:118, date:"2027-01-22", name:"GSTR-3B — QRMP Category I States", period:"Q3 Oct–Dec 2026", category:"GST" },
+  { id:119, date:"2027-01-24", name:"GSTR-3B — QRMP Category II States", period:"Q3 Oct–Dec 2026", category:"GST" },
+  { id:120, date:"2027-01-31", name:"TDS Return — Form 24Q / 26Q / 27Q", period:"Q3 FY 2026-27", category:"TDS/TCS" },
+
+  // FEBRUARY 2027
+  { id:121, date:"2027-02-07", name:"TDS / TCS Payment", period:"January 2027", category:"TDS/TCS" },
+  { id:122, date:"2027-02-10", name:"GSTR-7 Filing (TDS under GST)", period:"January 2027", category:"GST" },
+  { id:123, date:"2027-02-10", name:"GSTR-8 Filing (E-Commerce TCS)", period:"January 2027", category:"GST" },
+  { id:124, date:"2027-02-11", name:"GSTR-1 Filing (Monthly)", period:"January 2027", category:"GST" },
+  { id:125, date:"2027-02-13", name:"IFF Filing — QRMP Scheme (Month 1)", period:"Jan–Mar 2027", category:"GST" },
+  { id:126, date:"2027-02-15", name:"PF Contribution Payment", period:"January 2027", category:"PF/ESIC" },
+  { id:127, date:"2027-02-15", name:"ESIC Contribution Payment", period:"January 2027", category:"PF/ESIC" },
+  { id:128, date:"2027-02-15", name:"TDS Certificate — Form 16A", period:"Q3 FY 2026-27", category:"TDS/TCS" },
+  { id:129, date:"2027-02-20", name:"GSTR-3B Filing (Turnover > ₹5 Cr)", period:"January 2027", category:"GST" },
+
+  // MARCH 2027
+  { id:130, date:"2027-03-07", name:"TDS / TCS Payment", period:"February 2027", category:"TDS/TCS" },
+  { id:131, date:"2027-03-10", name:"GSTR-7 Filing (TDS under GST)", period:"February 2027", category:"GST" },
+  { id:132, date:"2027-03-10", name:"GSTR-8 Filing (E-Commerce TCS)", period:"February 2027", category:"GST" },
+  { id:133, date:"2027-03-11", name:"GSTR-1 Filing (Monthly)", period:"February 2027", category:"GST" },
+  { id:134, date:"2027-03-13", name:"IFF Filing — QRMP Scheme (Month 2)", period:"Jan–Mar 2027", category:"GST" },
+  { id:135, date:"2027-03-15", name:"Advance Tax — 4th &amp; Final Instalment (100%)", period:"AY 2027-28", category:"Income Tax" },
+  { id:136, date:"2027-03-15", name:"PF Contribution Payment", period:"February 2027", category:"PF/ESIC" },
+  { id:137, date:"2027-03-15", name:"ESIC Contribution Payment", period:"February 2027", category:"PF/ESIC" },
+  { id:138, date:"2027-03-20", name:"GSTR-3B Filing (Turnover > ₹5 Cr)", period:"February 2027", category:"GST" },
+  { id:139, date:"2027-03-31", name:"Updated Return — ITR-U (2 years window)", period:"AY 2025-26", category:"Income Tax" },
+  { id:140, date:"2027-03-31", name:"Section 80C / 80D — Last Date for Tax-Saving Investments", period:"FY 2026-27", category:"Income Tax" },
+  { id:141, date:"2027-03-31", name:"Advance Tax — Review &amp; Settlement", period:"AY 2027-28 (Final check)", category:"Income Tax" },
+  { id:142, date:"2027-03-31", name:"MSME Form I (Half-yearly statement)", period:"Oct 2026–Mar 2027", category:"Company Law" },
+  { id:143, date:"2027-03-22", name:"GSTR-3B — QRMP Category I States", period:"Q4 Jan–Mar 2027 (Partial)", category:"GST" },
+];
+
+// ─── STATE ───────────────────────────────────────────────────────
+let activeCat    = 'all';
+let activeMonth  = 'all';
+let activeStatus = null;
+let activeStatTile = null;
+let sortField    = 'date';
+let sortAsc      = true;
+let searchQuery  = '';
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+
+// ─── UTILITIES ───────────────────────────────────────────────────
+function getStatus(dateStr) {
+  const d = new Date(dateStr); d.setHours(0,0,0,0);
+  const diff = Math.round((d - TODAY) / 86400000);
+  if (diff < 0)   return { key:'overdue',  label:'Overdue',         days: diff };
+  if (diff <= 3)  return { key:'critical', label:'Critical',        days: diff };
+  if (diff <= 7)  return { key:'urgent',   label:'Urgent',          days: diff };
+  if (diff <= 30) return { key:'upcoming', label:'Upcoming',        days: diff };
+  return           { key:'ok',       label:'Scheduled',       days: diff };
+}
+
+function catClass(cat) {
+  return cat.replace('/','').replace(' ','');
+}
+
+function formatDate(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  const day = d.getDate();
+  const mon = d.toLocaleString('en-IN', { month:'short' });
+  const yr  = d.getFullYear();
+  return { day, mon, yr };
+}
+
+function daysLabel(days) {
+  if (days < 0) return `${Math.abs(days)}d overdue`;
+  if (days === 0) return 'Today';
+  if (days === 1) return 'Tomorrow';
+  return `${days} days`;
+}
+
+function escHTML(s){ return s.replace(/&amp;/g,'&'); }
+
+// ─── RENDER ──────────────────────────────────────────────────────
+function render() {
+  const sq = searchQuery.toLowerCase();
+  let data = compliances.filter(c => {
+    const catOk    = activeCat === 'all' || c.category === activeCat;
+    const monOk    = activeMonth === 'all' || c.date.startsWith(activeMonth);
+    const st       = getStatus(c.date);
+    const statOk   = !activeStatus ||
+      (activeStatus === 'overdue'    && st.key === 'overdue') ||
+      (activeStatus === 'upcoming30' && ['critical','urgent','upcoming'].includes(st.key));
+    const statTileOk = !activeStatTile ||
+      (activeStatTile === 'all') ||
+      (activeStatTile === 'overdue'   && st.key === 'overdue') ||
+      (activeStatTile === 'critical'  && (st.key === 'critical' || st.key === 'urgent')) ||
+      (activeStatTile === 'upcoming'  && st.key === 'upcoming');
+    const searchOk = !sq || c.name.toLowerCase().includes(sq) ||
+                     c.period.toLowerCase().includes(sq) ||
+                     c.category.toLowerCase().includes(sq);
+    return catOk && monOk && statOk && statTileOk && searchOk;
+  });
+
+  // Sort
+  data.sort((a,b) => {
+    let va = sortField === 'date' ? a.date : a.category;
+    let vb = sortField === 'date' ? b.date : b.category;
+    if (sortField === 'date') {
+      if (va === vb) { va = a.name; vb = b.name; }
+    }
+    return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+  });
+
+  document.getElementById('shownCount').textContent = data.length;
+
+  const tbody = document.getElementById('tableBody');
+  const emptyState = document.getElementById('emptyState');
+  const table = document.getElementById('mainTable');
+
+  if (!data.length) {
+    tbody.innerHTML = '';
+    table.style.display = 'none';
+    emptyState.style.display = 'block';
+    return;
+  }
+  table.style.display = '';
+  emptyState.style.display = 'none';
+
+  let lastMonth = null;
+  let html = '';
+
+  data.forEach(c => {
+    const { day, mon, yr } = formatDate(c.date);
+    const st = getStatus(c.date);
+    const mKey = c.date.slice(0,7);
+
+    if (activeMonth === 'all' && mKey !== lastMonth) {
+      const monthLabel = new Date(c.date + 'T00:00:00').toLocaleString('en-IN', { month:'long', year:'numeric' });
+      const mCount = data.filter(x => x.date.startsWith(mKey)).length;
+      html += `<tr class="month-sep"><td colspan="6">📅 &nbsp;${monthLabel}<span class="sep-count">${mCount} deadline${mCount!==1?'s':''}</span></td></tr>`;
+      lastMonth = mKey;
+    }
+
+    const catCls = catClass(c.category);
+    const badgeCat = c.category === 'TDS/TCS' ? 'TDS / TCS' : c.category === 'PF/ESIC' ? 'PF / ESIC' : c.category;
+
+    html += `<tr>
+      <td class="td-date">
+        <span class="day-num">${day}</span>
+        <span class="month-yr">${mon} ${yr}</span>
+      </td>
+      <td class="td-compliance">${c.name}</td>
+      <td class="td-period">${c.period}</td>
+      <td><span class="cat-badge ${catCls}">${badgeCat}</span></td>
+      <td>
+        <span class="status-badge status-${st.key}" title="${daysLabel(st.days)}">${st.label}</span>
+        <span style="font-size:10.5px;color:var(--text-light);margin-left:5px;font-variant-numeric:tabular-nums">${daysLabel(st.days)}</span>
+      </td>
+      <td class="td-actions">
+        <button class="action-btn" title="Copy to clipboard" onclick="copyRow(this, ${c.id})">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+        </button>
+        <button class="action-btn" title="WhatsApp reminder" onclick="sendWhatsApp(${c.id})">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+          </svg>
+        </button>
+      </td>
+    </tr>`;
+  });
+
+  tbody.innerHTML = html;
+  updateCounts();
+  updateActiveFiltersBar();
+}
+
+// ─── COUNTS ──────────────────────────────────────────────────────
+function updateCounts() {
+  const all      = compliances.length;
+  const overdue  = compliances.filter(c => getStatus(c.date).key === 'overdue').length;
+  const critical = compliances.filter(c => ['critical','urgent'].includes(getStatus(c.date).key)).length;
+  const upcoming = compliances.filter(c => getStatus(c.date).key === 'upcoming').length;
+  document.getElementById('totalCount').textContent    = all;
+  document.getElementById('overdueCount').textContent  = overdue;
+  document.getElementById('criticalCount').textContent = critical;
+  document.getElementById('upcomingCount').textContent = upcoming;
+}
+
+// ─── FILTER HANDLERS ─────────────────────────────────────────────
+function toggleCat(el, cat) {
+  document.querySelectorAll('[data-cat]').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  activeCat = cat;
+  render();
+}
+
+function toggleMonth(el, m) {
+  document.querySelectorAll('[data-m]').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  activeMonth = m;
+  render();
+}
+
+function toggleStatPill(el, st) {
+  if (activeStatus === st) {
+    el.classList.remove('active');
+    activeStatus = null;
+  } else {
+    document.querySelectorAll('[data-status]').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    activeStatus = st;
+  }
+  render();
+}
+
+function toggleStatFilter(el, type) {
+  if (activeStatTile === type) {
+    el.classList.remove('active');
+    activeStatTile = null;
+  } else {
+    document.querySelectorAll('.stat-tile').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    activeStatTile = type === 'all' ? null : type;
+  }
+  render();
+}
+
+// ─── SORT ────────────────────────────────────────────────────────
+function sortBy(field) {
+  if (sortField === field) sortAsc = !sortAsc;
+  else { sortField = field; sortAsc = true; }
+  document.querySelectorAll('.sort-icon').forEach(i => i.textContent = '');
+  const icon = document.getElementById('sort-' + field);
+  if (icon) icon.textContent = sortAsc ? '▲' : '▼';
+  document.querySelectorAll('thead th').forEach(t => t.classList.remove('sorted'));
+  const headers = document.querySelectorAll('thead th');
+  headers.forEach(h => { if (h.getAttribute('onclick') && h.getAttribute('onclick').includes(field)) h.classList.add('sorted'); });
+  render();
+}
+
+// ─── ACTIVE FILTERS BAR ──────────────────────────────────────────
+function updateActiveFiltersBar() {
+  const bar = document.getElementById('activeFiltersBar');
+  let html = '';
+  if (activeCat !== 'all') html += `<div class="filter-tag">${activeCat} <button onclick="clearCat()">✕</button></div>`;
+  if (activeMonth !== 'all') {
+    const mn = new Date(activeMonth + '-01').toLocaleString('en-IN', {month:'short', year:'numeric'});
+    html += `<div class="filter-tag">${mn} <button onclick="clearMonth()">✕</button></div>`;
+  }
+  if (searchQuery) html += `<div class="filter-tag">Search: "${searchQuery}" <button onclick="clearSearch()">✕</button></div>`;
+  bar.innerHTML = html;
+}
+
+function clearCat() {
+  document.querySelectorAll('[data-cat]').forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-cat="all"]').classList.add('active');
+  activeCat = 'all'; render();
+}
+function clearMonth() {
+  document.querySelectorAll('[data-m]').forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-m="all"]').classList.add('active');
+  activeMonth = 'all'; render();
+}
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  searchQuery = ''; render();
+}
+
+// ─── COPY ROW ────────────────────────────────────────────────────
+function copyRow(btn, id) {
+  const c = compliances.find(x => x.id === id);
+  if (!c) return;
+  const st = getStatus(c.date);
+  const d  = new Date(c.date + 'T00:00:00');
+  const ds = d.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+  const text = `${c.name}\nPeriod: ${c.period}\nDue: ${ds}\nCategory: ${c.category}\nStatus: ${st.label} (${daysLabel(st.days)})\n\n— S S Sancheti & Associates | CA Siddharth S. Sancheti`;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    setTimeout(() => btn.classList.remove('copied'), 1500);
+    showToast('Copied to clipboard!');
+  });
+}
+
+// ─── WHATSAPP ────────────────────────────────────────────────────
+function sendWhatsApp(id) {
+  const c = compliances.find(x => x.id === id);
+  if (!c) return;
+  const d  = new Date(c.date + 'T00:00:00');
+  const ds = d.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+  const st = getStatus(c.date);
+  const msg = encodeURIComponent(
+    `Dear Client,\n\nCompliance Reminder 🔔\n\n📌 *${escHTML(c.name)}*\n📅 Due Date: *${ds}*\n📂 Period: ${c.period}\n🏷 Category: ${c.category}\n⚠️ Status: ${st.label}\n\nKindly ensure timely compliance to avoid interest and penalties.\n\n— *CA. Siddharth S. Sancheti*\nS S Sancheti & Associates | Chartered Accountants\nGoregaon East, Mumbai`
+  );
+  window.open(`https://wa.me/?text=${msg}`, '_blank');
+}
+
+// ─── TOAST ───────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ─── SEARCH ──────────────────────────────────────────────────────
+document.getElementById('searchInput').addEventListener('input', function() {
+  searchQuery = this.value.trim();
+  render();
+});
+
+// Ctrl+F hijack
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+});
+
+// ─── TODAY BADGE ─────────────────────────────────────────────────
+document.getElementById('todayBadge').textContent =
+  'Today: ' + TODAY.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+
+// ─── INIT ────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
