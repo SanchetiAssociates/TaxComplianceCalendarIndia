@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>S S Sancheti &amp; Associates | Client Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --gold:#e2c97e;--gold2:#b8943f;--bg:#080b11;--bg2:#0a0d14;--bg3:#0f1117;--bg4:#161b27;
+  --border:#1e2535;--text:#e2e8f0;--muted:#64748b;--muted2:#475569;--muted3:#374151;
+  --red:#ef4444;--amber:#f59e0b;--blue:#38bdf8;--green:#4ade80;--purple:#a78bfa;--orange:#fb923c;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+input,select,textarea{font-family:'DM Sans',sans-serif;}
+button{font-family:'DM Sans',sans-serif;cursor:pointer;}
+a{color:var(--blue);text-decoration:none;}
+
+/* LAYOUT */
+.page{display:none;min-height:100vh;}
+.page.active{display:block;}
+
+/* HEADER */
+.nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;gap:12px;}
+.nav-brand{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.nav-logo{width:32px;height:32px;background:linear-gradient(135deg,var(--gold2),var(--gold));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--bg);font-family:'Playfair Display',serif;flex-shrink:0;}
+.nav-title{font-size:13px;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif;line-height:1;}
+.nav-sub{font-size:9px;color:var(--gold2);letter-spacing:0.08em;margin-top:2px;}
+.nav-tabs{display:flex;gap:3px;flex-wrap:wrap;}
+.nav-tab{padding:5px 11px;border-radius:8px;border:none;font-size:11px;font-weight:700;background:transparent;color:var(--muted);}
+.nav-tab.active{background:linear-gradient(135deg,var(--gold2),var(--gold));color:var(--bg);}
+.nav-tab:hover:not(.active){background:var(--bg4);color:var(--text);}
+.btn-logout{padding:5px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg4);color:var(--muted);font-size:11px;font-weight:700;flex-shrink:0;}
+
+/* CONTENT */
+.content{padding:20px;max-width:880px;margin:0 auto;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:none;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif;}
+.btn-primary{background:linear-gradient(135deg,var(--gold2),var(--gold));color:var(--bg);}
+.btn-ghost{background:var(--bg4);color:var(--muted);border:1px solid var(--border);}
+.btn-danger{background:#1a0f0f;color:var(--red);border:1px solid #2d1515;}
+.btn:disabled{opacity:0.5;}
+
+/* FORM */
+.inp{width:100%;background:var(--bg4);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:9px 12px;font-size:13px;outline:none;}
+.inp:focus{border-color:var(--gold2);}
+.lbl{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;display:block;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+.form-grid .full{grid-column:1/-1;}
+.form-row{margin-bottom:14px;}
+
+/* BADGE */
+.badge{display:inline-block;font-size:11px;background:var(--bg4);color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:2px 8px;white-space:nowrap;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(4px);}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:28px;width:min(520px,95vw);max-height:90vh;overflow-y:auto;}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.modal-title{font-size:16px;font-family:'Playfair Display',serif;color:var(--gold);}
+.modal-close{background:var(--bg4);border:none;border-radius:8px;color:var(--muted);padding:5px 10px;font-size:14px;}
+
+/* CARDS */
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;}
+.card.overdue{border-color:#7f1d1d;}
+.task-title{font-size:13px;font-weight:600;color:var(--text);line-height:1.4;}
+.task-badges{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0;}
+.task-notes{font-size:12px;color:var(--muted);margin-bottom:4px;}
+.task-due{font-size:11px;color:var(--muted);}
+.task-due.overdue{color:var(--red);}
+.task-actions{display:flex;gap:5px;margin-top:10px;justify-content:flex-end;flex-wrap:wrap;}
+.task-actions button{padding:3px 9px;font-size:11px;}
+
+/* STATUS BADGES */
+.s-pending{background:#2d1f0e;color:#f59e0b;border-color:#78350f;}
+.s-inprogress{background:#0f1e2d;color:var(--blue);border-color:#0c4a6e;}
+.s-review{background:#1a0f2e;color:var(--purple);border-color:#4c1d95;}
+.s-done{background:#0f2d1a;color:var(--green);border-color:#14532d;}
+
+/* STAT CARDS */
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
+.stat{border-radius:12px;padding:16px 18px;flex:1;min-width:90px;}
+.stat-val{font-size:24px;font-weight:800;font-family:'Playfair Display',serif;}
+.stat-lbl{font-size:11px;color:var(--muted);margin-top:3px;}
+
+/* STAFF PROGRESS */
+.staff-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.staff-card{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;}
+.progress-bar{background:var(--bg4);border-radius:99px;height:5px;overflow:hidden;margin:8px 0;}
+.progress-fill{height:100%;border-radius:99px;}
+
+/* COMP ROWS */
+.comp-row{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.comp-row.urgent{border-color:#7f1d1d;}
+.comp-row.soon{border-color:#78350f;}
+.comp-name{font-size:13px;color:var(--text);font-weight:500;}
+.comp-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.comp-days{font-size:13px;font-weight:700;text-align:right;}
+.comp-date{font-size:11px;color:var(--muted2);text-align:right;}
+
+/* CLIENT LIST */
+.client-row{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;cursor:pointer;}
+.client-row:hover{border-color:var(--gold2);}
+
+/* FILTER BAR */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
+.filter-bar .inp{flex:1;min-width:140px;}
+.filter-count{font-size:11px;color:var(--muted2);margin-bottom:10px;}
+
+/* SECTION HEADER */
+.section-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.section-bar{width:3px;height:16px;border-radius:99px;}
+.section-name{font-size:13px;font-weight:700;}
+.section-count{font-size:11px;color:var(--muted2);background:var(--bg4);border-radius:99px;padding:1px 8px;}
+
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;}
+.login-box{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:32px;width:min(400px,94vw);}
+.firm-header{text-align:center;margin-bottom:28px;}
+.firm-logo-wrap{display:inline-flex;align-items:center;gap:14px;background:var(--bg3);border:1px solid rgba(184,148,63,0.3);border-radius:16px;padding:16px 24px;}
+.firm-logo{width:48px;height:48px;background:linear-gradient(135deg,var(--gold2),var(--gold));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--bg);font-family:'Playfair Display',serif;flex-shrink:0;}
+.firm-name{font-size:17px;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif;line-height:1.2;text-align:left;}
+.firm-tag{font-size:11px;color:var(--gold2);letter-spacing:0.12em;margin-top:3px;}
+.pin-input{letter-spacing:0.4em;font-size:26px;text-align:center;padding:14px !important;}
+.login-err{font-size:13px;color:var(--red);background:#1a0606;border:1px solid #7f1d1d;border-radius:8px;padding:8px 12px;text-align:center;margin-bottom:16px;}
+.login-divider{border:none;border-top:1px solid var(--border);margin:20px 0;}
+.hidden-link{background:none;border:none;color:#1e2535;font-size:10px;margin-top:16px;}
+
+/* NOTIFY LOG */
+.log-box{background:#080b11;border:1px solid var(--border);border-radius:10px;padding:12px;min-height:100px;max-height:260px;overflow-y:auto;font-family:monospace;font-size:12px;}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .staff-grid{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .form-grid .full{grid-column:1;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div id="page-login" class="page active">
+  <div class="login-wrap">
+    <div class="firm-header">
+      <div class="firm-logo-wrap">
+        <div class="firm-logo">SS</div>
+        <div>
+          <div class="firm-name">S S Sancheti &amp; Associates</div>
+          <div class="firm-tag">CHARTERED ACCOUNTANTS</div>
+        </div>
+      </div>
+    </div>
+    <div class="login-box">
+      <div style="text-align:center;margin-bottom:24px;">
+        <div style="font-size:15px;color:var(--muted);margin-bottom:6px;">Client Portal</div>
+        <div style="font-size:12px;color:var(--muted2);">Enter your unique PIN to access your account</div>
+      </div>
+      <div class="form-row">
+        <label class="lbl">Your PIN</label>
+        <input class="inp pin-input" type="password" inputmode="numeric" maxlength="6" id="client-pin" placeholder="······" autocomplete="off"/>
+      </div>
+      <div id="login-err" class="login-err" style="display:none;"></div>
+      <button class="btn btn-primary" style="width:100%;padding:13px;font-size:14px;" onclick="attemptClientLogin()">Access My Account →</button>
+      <hr class="login-divider"/>
+      <div style="text-align:center;font-size:11px;color:var(--muted2);">
+        Don't have a PIN? Contact S S Sancheti &amp; Associates
+      </div>
+      <div style="text-align:center;margin-top:12px;">
+        <button class="hidden-link" onclick="showInternalLogin()">.</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INTERNAL LOGIN PAGE -->
+<div id="page-internal-login" class="page">
+  <div class="login-wrap">
+    <div class="firm-header">
+      <div class="firm-logo-wrap">
+        <div class="firm-logo">SS</div>
+        <div>
+          <div class="firm-name">S S Sancheti &amp; Associates</div>
+          <div class="firm-tag">CHARTERED ACCOUNTANTS</div>
+        </div>
+      </div>
+    </div>
+    <div class="login-box">
+      <div style="text-align:center;margin-bottom:20px;font-size:14px;color:var(--muted);">Internal Staff Access</div>
+      <div class="form-row">
+        <label class="lbl">Role</label>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-primary" id="irole-admin" onclick="setIRole('admin')" style="flex:1;">Admin</button>
+          <button class="btn btn-ghost" id="irole-staff" onclick="setIRole('staff')" style="flex:1;">Staff</button>
+        </div>
+      </div>
+      <div class="form-row" id="staff-select-row" style="display:none;">
+        <label class="lbl">Staff Member</label>
+        <select class="inp" id="internal-who">
+          <option value="">Select...</option>
+          <option>Anuja</option><option>Tayyab</option><option>SSS</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="lbl">PIN</label>
+        <input class="inp" type="password" inputmode="numeric" maxlength="4" id="internal-pin" placeholder="****" style="letter-spacing:0.3em;font-size:22px;text-align:center;" onkeydown="if(event.key==='Enter')attemptInternalLogin()"/>
+      </div>
+      <div id="internal-err" class="login-err" style="display:none;"></div>
+      <button class="btn btn-primary" style="width:100%;padding:10px;" onclick="attemptInternalLogin()">Login</button>
+      <div style="text-align:center;margin-top:14px;">
+        <button class="btn btn-ghost" style="font-size:11px;" onclick="showPage('page-login')">← Back to Client Portal</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN/STAFF SHELL -->
+<div id="page-internal" class="page">
+  <div class="nav">
+    <div class="nav-brand">
+      <div class="nav-logo">SS</div>
+      <div>
+        <div class="nav-title">S S Sancheti &amp; Associates</div>
+        <div class="nav-sub" id="nav-username">ADMIN</div>
+      </div>
+    </div>
+    <div class="nav-tabs" id="internal-tabs"></div>
+    <button class="btn-logout btn" onclick="doLogout()">Logout</button>
+  </div>
+  <div class="content" id="internal-content"></div>
+</div>
+
+<!-- CLIENT SHELL -->
+<div id="page-client" class="page">
+  <div class="nav">
+    <div class="nav-brand">
+      <div class="nav-logo">SS</div>
+      <div>
+        <div class="nav-title">S S Sancheti &amp; Associates</div>
+        <div class="nav-sub" id="client-username">CLIENT</div>
+      </div>
+    </div>
+    <div class="nav-tabs" id="client-tabs"></div>
+    <button class="btn-logout btn" onclick="doLogout()">Logout</button>
+  </div>
+  <div class="content" id="client-content"></div>
+</div>
+
+<!-- TASK MODAL -->
+<div class="modal-overlay" id="task-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="task-modal-title">Add Task</div>
+      <button class="modal-close" onclick="closeTaskModal()">✕</button>
+    </div>
+    <div id="task-modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════
+var FIRM = "S S Sancheti & Associates";
+var ADMIN_PIN = "9999";
+var STAFF_PINS = {Anuja:"1111",Tayyab:"2222",SSS:"3333"};
+var STAFF = ["Anuja","Tayyab","SSS"];
+var CATS = ["Financials","GST","TDS","ROC/Compliance","Appeal","IT Filing","Audit","Documentation","Follow-up","Other"];
+var STATUSES = ["Pending","In Progress","Review","Done"];
+var PRIS = ["High","Medium","Low"];
+
+var CLIENTS = [
+  {id:"C01",name:"ADAMAS VENTURES PRIVATE LIMITED",         short:"Adamas Ventures",   type:"Pvt Ltd",    pin:"847392",gst:1,tds:1,audit:1},
+  {id:"C02",name:"AKIP VENTURE PVT LTD",                    short:"AKIP Venture",      type:"Pvt Ltd",    pin:"GROUP", gst:1,tds:1,audit:1},
+  {id:"C03",name:"Anil Gupta",                               short:"Anil Gupta",        type:"Individual", pin:"561084",gst:0,tds:0,audit:0},
+  {id:"C04",name:"BULBUL MEDIA COLLECTIVE PVT LTD",         short:"Bulbul Media",      type:"Pvt Ltd",    pin:"730492",gst:1,tds:1,audit:1},
+  {id:"C05",name:"Disha Patani",                             short:"Disha Patani",      type:"Individual", pin:"198365",gst:0,tds:1,audit:0},
+  {id:"C06",name:"EM PEE SYNDICHEM PVT LTD",                short:"EM Pee Syndichem",  type:"Pvt Ltd",    pin:"472918",gst:1,tds:1,audit:1},
+  {id:"C07",name:"Foodlink F&B Holdings India Limited",     short:"Foodlink F&B",      type:"Pvt Ltd",    pin:"836104",gst:1,tds:1,audit:1},
+  {id:"C08",name:"HREEM GOLD PRIVATE LIMITED",               short:"Hreem Gold",        type:"Pvt Ltd",    pin:"249537",gst:1,tds:1,audit:1},
+  {id:"C09",name:"IWM PUBLISHING AND COMMUNICATION PVT LTD",short:"IWM Publishing",    type:"Pvt Ltd",    pin:"605821",gst:1,tds:1,audit:1},
+  {id:"C10",name:"KJMC CAPITAL MARKET SERVICES LTD",        short:"KJMC Capital",      type:"Pvt Ltd",    pin:"GROUP", gst:1,tds:1,audit:1},
+  {id:"C11",name:"KJMC CORPORATE ADVISORS INDIA LIMITED",   short:"KJMC Corporate",    type:"Pvt Ltd",    pin:"GROUP", gst:1,tds:1,audit:1},
+  {id:"C12",name:"KJMC CREDIT MARKETING LIMITED",           short:"KJMC Credit",       type:"Pvt Ltd",    pin:"GROUP", gst:1,tds:1,audit:1},
+  {id:"C13",name:"KJMC FINANCIAL SERVICES LIMITED",         short:"KJMC Financial",    type:"Pvt Ltd",    pin:"GROUP", gst:1,tds:1,audit:1},
+  {id:"C14",name:"KJMC Investment Co.",                      short:"KJMC Investment",   type:"Other",      pin:"GROUP", gst:0,tds:1,audit:0},
+  {id:"C15",name:"KJMC PLATINUM BUILDERS PRIVATE LIMITED",  short:"KJMC Platinum",     type:"Pvt Ltd",    pin:"GROUP", gst:1,tds:1,audit:1},
+  {id:"C16",name:"KJMC SHARES AND SECURITIES LIMITED",      short:"KJMC Shares",       type:"Pvt Ltd",    pin:"GROUP", gst:1,tds:1,audit:1},
+  {id:"C17",name:"KJMC TRADING AND AGENCY LIMITED",         short:"KJMC Trading",      type:"Pvt Ltd",    pin:"GROUP", gst:1,tds:1,audit:1},
+  {id:"C18",name:"MELT FITNESS LLP",                        short:"Melt Fitness",      type:"LLP",        pin:"791346",gst:1,tds:1,audit:1},
+  {id:"C19",name:"MERCADO INSIGHT SOLUTION LLP",            short:"Mercado Insight",   type:"LLP",        pin:"423085",gst:1,tds:1,audit:0},
+  {id:"C20",name:"MFL Personal Fitness",                    short:"MFL Fitness",       type:"Other",      pin:"867214",gst:0,tds:0,audit:0},
+  {id:"C21",name:"Oikotyan",                                short:"Oikotyan",          type:"Other",      pin:"134792",gst:1,tds:0,audit:0},
+  {id:"C22",name:"PAWIMPRINTS VENTURES LLP",                short:"Pawimprints",       type:"LLP",        pin:"596038",gst:1,tds:1,audit:0},
+  {id:"C23",name:"Puja Trades and Investments Pvt Ltd",     short:"Puja Trades",       type:"Pvt Ltd",    pin:"273461",gst:1,tds:1,audit:1},
+  {id:"C24",name:"RAJEEV KUMAR",                            short:"Rajeev Kumar",      type:"Individual", pin:"948172",gst:0,tds:1,audit:0},
+  {id:"C25",name:"Sandeep Gulati",                          short:"Sandeep Gulati",    type:"Individual", pin:"315089",gst:0,tds:0,audit:0},
+  {id:"C26",name:"Sonup Krishnan Sahadevan",                short:"Sonup Krishnan",    type:"Individual", pin:"682741",gst:0,tds:0,audit:0},
+  {id:"C27",name:"Sumit Sharma",                            short:"Sumit Sharma",      type:"Individual", pin:"417963",gst:0,tds:0,audit:0},
+  {id:"C28",name:"WAYSIDE VENTURES",                        short:"Wayside Ventures",  type:"Other",      pin:"259384",gst:1,tds:0,audit:0},
+  {id:"C29",name:"WHITE APPLE LLP",                         short:"White Apple",       type:"LLP",        pin:"831407",gst:1,tds:1,audit:0},
+  {id:"C30",name:"YOUNG STAR GLOBAL PRIVATE LIMITED",       short:"Young Star Global", type:"Pvt Ltd",    pin:"574920",gst:1,tds:1,audit:1},
+];
+
+var GROUPS = [{id:"G01",name:"KJMC Group",pin:"583921",clientIds:["C02","C10","C11","C12","C13","C14","C15","C16","C17"]}];
+
+var COMPLIANCE = {
+  "Pvt Ltd":[
+    {name:"GSTR-1 Filing",freq:"Monthly",dueDay:11,cat:"GST",req:"gst"},
+    {name:"GSTR-3B Filing",freq:"Monthly",dueDay:20,cat:"GST",req:"gst"},
+    {name:"TDS Payment",freq:"Monthly",dueDay:7,cat:"TDS",req:"tds"},
+    {name:"Monthly Accounts Review",freq:"Monthly",dueDay:28,cat:"Financials"},
+    {name:"Advance Tax",freq:"Quarterly",dueDates:["06-15","09-15","12-15","03-15"],cat:"IT Filing"},
+    {name:"TDS Return",freq:"Quarterly",dueDates:["07-31","10-31","01-31","05-31"],cat:"TDS",req:"tds"},
+    {name:"DPT-3",freq:"Annual",dueMMDD:"06-30",cat:"ROC/Compliance"},
+    {name:"AGM",freq:"Annual",dueMMDD:"09-30",cat:"ROC/Compliance"},
+    {name:"Statutory Audit",freq:"Annual",dueMMDD:"09-30",cat:"Audit",req:"audit"},
+    {name:"DIR-3 KYC",freq:"Annual",dueMMDD:"09-30",cat:"ROC/Compliance"},
+    {name:"Tax Audit Form 3CD",freq:"Annual",dueMMDD:"10-31",cat:"IT Filing",req:"audit"},
+    {name:"AOC-4 Financial Stmts",freq:"Annual",dueMMDD:"10-29",cat:"ROC/Compliance"},
+    {name:"ITR Filing",freq:"Annual",dueMMDD:"10-31",cat:"IT Filing"},
+    {name:"MGT-7 Annual Return",freq:"Annual",dueMMDD:"11-29",cat:"ROC/Compliance"},
+  ],
+  "LLP":[
+    {name:"GSTR-1 Filing",freq:"Monthly",dueDay:11,cat:"GST",req:"gst"},
+    {name:"GSTR-3B Filing",freq:"Monthly",dueDay:20,cat:"GST",req:"gst"},
+    {name:"TDS Payment",freq:"Monthly",dueDay:7,cat:"TDS",req:"tds"},
+    {name:"Monthly Accounts Review",freq:"Monthly",dueDay:28,cat:"Financials"},
+    {name:"Advance Tax",freq:"Quarterly",dueDates:["06-15","09-15","12-15","03-15"],cat:"IT Filing"},
+    {name:"TDS Return",freq:"Quarterly",dueDates:["07-31","10-31","01-31","05-31"],cat:"TDS",req:"tds"},
+    {name:"LLP Annual Return Form 11",freq:"Annual",dueMMDD:"05-30",cat:"ROC/Compliance"},
+    {name:"Statement of Accounts Form 8",freq:"Annual",dueMMDD:"10-30",cat:"ROC/Compliance"},
+    {name:"Tax Audit Form 3CD",freq:"Annual",dueMMDD:"10-31",cat:"IT Filing",req:"audit"},
+    {name:"ITR Filing",freq:"Annual",dueMMDD:"10-31",cat:"IT Filing"},
+  ],
+  "Individual":[
+    {name:"GSTR-1 Filing",freq:"Monthly",dueDay:11,cat:"GST",req:"gst"},
+    {name:"GSTR-3B Filing",freq:"Monthly",dueDay:20,cat:"GST",req:"gst"},
+    {name:"TDS Payment",freq:"Monthly",dueDay:7,cat:"TDS",req:"tds"},
+    {name:"Advance Tax",freq:"Quarterly",dueDates:["06-15","09-15","12-15","03-15"],cat:"IT Filing"},
+    {name:"TDS Return",freq:"Quarterly",dueDates:["07-31","10-31","01-31","05-31"],cat:"TDS",req:"tds"},
+    {name:"ITR Filing",freq:"Annual",dueMMDD:"07-31",cat:"IT Filing"},
+    {name:"Tax Audit Form 3CD",freq:"Annual",dueMMDD:"10-31",cat:"IT Filing",req:"audit"},
+  ],
+  "Other":[
+    {name:"GSTR-1 Filing",freq:"Monthly",dueDay:11,cat:"GST",req:"gst"},
+    {name:"GSTR-3B Filing",freq:"Monthly",dueDay:20,cat:"GST",req:"gst"},
+    {name:"TDS Payment",freq:"Monthly",dueDay:7,cat:"TDS",req:"tds"},
+    {name:"Monthly Accounts Review",freq:"Monthly",dueDay:28,cat:"Financials"},
+    {name:"Advance Tax",freq:"Quarterly",dueDates:["06-15","09-15","12-15","03-15"],cat:"IT Filing"},
+    {name:"ITR Filing",freq:"Annual",dueMMDD:"07-31",cat:"IT Filing"},
+  ]
+};
+
+var DEFAULT_TASKS = [
+  {id:1,title:"Mahavir Bhavan Financials",client:"Mahavir Bhavan",staff:"Anuja",category:"Financials",priority:"High",status:"Pending",notes:"",dueDate:""},
+  {id:2,title:"Ganesh Ramadurai Form 15CB",client:"Ganesh Ramadurai",staff:"Anuja",category:"TDS",priority:"High",status:"Pending",notes:"",dueDate:""},
+  {id:3,title:"Heena Shah Written Submission",client:"Heena Shah",staff:"SSS",category:"Documentation",priority:"High",status:"Pending",notes:"",dueDate:""},
+  {id:4,title:"Dhimakant Bakshi Written Submission",client:"Dhimakant Bakshi",staff:"SSS",category:"Documentation",priority:"High",status:"Pending",notes:"",dueDate:""},
+  {id:5,title:"ARMS Appeal Filing and Submission",client:"ARMS",staff:"SSS",category:"Appeal",priority:"High",status:"Pending",notes:"",dueDate:""},
+  {id:6,title:"TBS Financials",client:"TBS",staff:"Tayyab",category:"Financials",priority:"Medium",status:"Pending",notes:"",dueDate:""},
+  {id:7,title:"KJMC Group Financials",client:"KJMC Capital",staff:"Tayyab",category:"Financials",priority:"Medium",status:"Pending",notes:"",dueDate:""},
+  {id:8,title:"YSGPL Financials",client:"YSGPL",staff:"Tayyab",category:"Financials",priority:"Medium",status:"Pending",notes:"",dueDate:""},
+  {id:9,title:"Neerat Kaur GST Refund",client:"Neerat Kaur",staff:"Tayyab",category:"GST",priority:"High",status:"Pending",notes:"",dueDate:""},
+  {id:10,title:"Samvaay Financials",client:"Samvaay",staff:"Anuja",category:"Financials",priority:"Medium",status:"Pending",notes:"",dueDate:""},
+  {id:11,title:"IWM Financials",client:"IWM Publishing",staff:"Anuja",category:"Financials",priority:"Medium",status:"Pending",notes:"",dueDate:""},
+  {id:12,title:"White Apple Financials",client:"White Apple",staff:"Anuja",category:"Financials",priority:"Medium",status:"Pending",notes:"",dueDate:""},
+  {id:13,title:"Mercado Financials",client:"Mercado Insight",staff:"Anuja",category:"Financials",priority:"Medium",status:"Pending",notes:"",dueDate:""},
+  {id:14,title:"Oikotyan Financials",client:"Oikotyan",staff:"Anuja",category:"Financials",priority:"Medium",status:"Pending",notes:"",dueDate:""},
+  {id:15,title:"Sancheti Charitable Trust Financials",client:"Sancheti Charitable",staff:"Anuja",category:"Financials",priority:"Medium",status:"Pending",notes:"",dueDate:""},
+  {id:16,title:"Indian Kettle Bell Financials",client:"Indian Kettle Bell",staff:"Anuja",category:"Financials",priority:"Medium",status:"Pending",notes:"",dueDate:""},
+  {id:17,title:"IWM Private Placement Documents",client:"IWM Publishing",staff:"Anuja",category:"Documentation",priority:"High",status:"Pending",notes:"",dueDate:""},
+  {id:18,title:"Sandeep Sharma Old Companies Act Filings",client:"Sandeep Sharma",staff:"Anuja",category:"ROC/Compliance",priority:"High",status:"Pending",notes:"",dueDate:""},
+  {id:19,title:"Kids Book Sidds Index",client:"Internal",staff:"SSS",category:"Other",priority:"Low",status:"Pending",notes:"As per Sidd index",dueDate:""},
+  {id:20,title:"Follow up Sandeep Sharma Investment Proposal",client:"Sandeep Sharma",staff:"SSS",category:"Follow-up",priority:"Medium",status:"Pending",notes:"",dueDate:""},
+  {id:21,title:"Follow up Garviit Sancheti Lower Parel",client:"Garviit Sancheti",staff:"SSS",category:"Follow-up",priority:"Medium",status:"Pending",notes:"Lower Parel and other tasks",dueDate:""},
+  {id:22,title:"Meeting Paras Jain at Westernedge",client:"Paras Jain",staff:"SSS",category:"Follow-up",priority:"High",status:"Pending",notes:"Tomorrow at Westernedge",dueDate:new Date(Date.now()+86400000).toISOString().split("T")[0]},
+];
+
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+var state = {
+  user: null,
+  tasks: [],
+  iRole: "admin",
+  internalTab: "dashboard",
+  clientTab: "tasks",
+  editingTaskId: null,
+  filterStaff: "All",
+  filterStatus: "All",
+  filterSearch: "",
+  compDays: 30,
+  clientSearch: "",
+  clientTypeFilter: "All",
+  selectedClient: null,
+};
+
+function loadTasks() {
+  try { var s = localStorage.getItem("sss_tasks_v1"); if(s) return JSON.parse(s); } catch(e){}
+  return DEFAULT_TASKS.map(function(t){return Object.assign({},t,{id:t.id,createdAt:new Date().toISOString()});});
+}
+function saveTasks() { try{localStorage.setItem("sss_tasks_v1",JSON.stringify(state.tasks));}catch(e){} }
+state.tasks = loadTasks();
+
+// ═══════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════
+function uid(){return Date.now()+Math.random();}
+function todayStr(){return new Date().toISOString().split("T")[0];}
+function fmtDate(iso){if(!iso)return"";return new Date(iso).toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"});}
+function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+
+function statusClass(s){var m={"Pending":"s-pending","In Progress":"s-inprogress","Review":"s-review","Done":"s-done"};return m[s]||"s-pending";}
+function staffColor(s){var m={Anuja:"#a78bfa",Tayyab:"#38bdf8",SSS:"#fb923c"};return m[s]||"#94a3b8";}
+function typeColor(t){var m={"Pvt Ltd":"#38bdf8",LLP:"#a78bfa",Individual:"#4ade80",Other:"#f59e0b"};return m[t]||"#94a3b8";}
+function priColor(p){return p==="High"?"#ef4444":p==="Medium"?"#f59e0b":"#6b7280";}
+
+function getNextDue(comp){
+  var now=new Date(),y=now.getFullYear();
+  if(comp.freq==="Monthly"){var d=new Date(y,now.getMonth(),comp.dueDay);if(d<=now)d=new Date(y,now.getMonth()+1,comp.dueDay);return d;}
+  if(comp.freq==="Quarterly"){
+    var cands=comp.dueDates.map(function(dd){var p=dd.split("-"),d2=new Date(y,+p[0]-1,+p[1]);if(d2<=now)d2=new Date(y+1,+p[0]-1,+p[1]);return d2;});
+    cands.sort(function(a,b){return a-b;});return cands.find(function(d3){return d3>now;})||cands[0];
+  }
+  var p2=comp.dueMMDD.split("-"),d4=new Date(y,+p2[0]-1,+p2[1]);if(d4<=now)d4=new Date(y+1,+p2[0]-1,+p2[1]);return d4;
+}
+function getClientComps(client){
+  var now=new Date();
+  return(COMPLIANCE[client.type]||[]).filter(function(c){return!c.req||client[c.req];}).map(function(c){var nd=getNextDue(c);return Object.assign({},c,{nextDue:nd,daysLeft:Math.ceil((nd-now)/86400000)});}).sort(function(a,b){return a.nextDue-b.nextDue;});
+}
+function getGroupClients(g){return CLIENTS.filter(function(c){return g.clientIds.indexOf(c.id)!==-1;});}
+
+function resolvePin(pin){
+  if(pin===ADMIN_PIN)return{type:"admin",user:{role:"admin",name:"Admin"}};
+  var sm=Object.keys(STAFF_PINS).find(function(s){return STAFF_PINS[s]===pin;});
+  if(sm)return{type:"staff",user:{role:"staff",name:sm}};
+  var gm=GROUPS.find(function(g){return g.pin===pin;});
+  if(gm)return{type:"group",user:{role:"client",isGroup:true,groupId:gm.id,name:gm.name}};
+  var cm=CLIENTS.find(function(c){return c.pin===pin;});
+  if(cm)return{type:"client",user:{role:"client",clientId:cm.id,name:cm.short,fullName:cm.name}};
+  return null;
+}
+
+function showPage(id){document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active");});document.getElementById(id).classList.add("active");}
+
+// ═══════════════════════════════════════════════════════════
+// LOGIN
+// ═══════════════════════════════════════════════════════════
+document.getElementById("client-pin").addEventListener("keydown",function(e){if(e.key==="Enter")attemptClientLogin();});
+
+function attemptClientLogin(){
+  var pin=document.getElementById("client-pin").value.trim();
+  var errEl=document.getElementById("login-err");
+  errEl.style.display="none";
+  if(!pin){errEl.textContent="Please enter your PIN";errEl.style.display="block";return;}
+  var res=resolvePin(pin);
+  if(!res||res.type==="admin"||res.type==="staff"){errEl.textContent="Invalid PIN. Please contact your CA.";errEl.style.display="block";return;}
+  state.user=res.user;
+  launchClientShell();
+}
+
+function showInternalLogin(){showPage("page-internal-login");}
+
+var iRoleVal="admin";
+function setIRole(r){
+  iRoleVal=r;
+  document.getElementById("irole-admin").className="btn "+(r==="admin"?"btn-primary":"btn-ghost");
+  document.getElementById("irole-staff").className="btn "+(r==="staff"?"btn-primary":"btn-ghost");
+  document.getElementById("staff-select-row").style.display=r==="staff"?"block":"none";
+  document.getElementById("internal-pin").value="";
+}
+
+function attemptInternalLogin(){
+  var pin=document.getElementById("internal-pin").value.trim();
+  var errEl=document.getElementById("internal-err");
+  errEl.style.display="none";
+  if(iRoleVal==="admin"){
+    if(pin===ADMIN_PIN){state.user={role:"admin",name:"Admin"};launchInternalShell();return;}
+    errEl.textContent="Incorrect PIN";errEl.style.display="block";return;
+  }
+  var who=document.getElementById("internal-who").value;
+  if(!who){errEl.textContent="Select a staff member";errEl.style.display="block";return;}
+  if(pin===STAFF_PINS[who]){state.user={role:"staff",name:who};launchInternalShell();return;}
+  errEl.textContent="Incorrect PIN";errEl.style.display="block";
+}
+
+function doLogout(){
+  state.user=null;
+  document.getElementById("client-pin").value="";
+  document.getElementById("internal-pin").value="";
+  document.getElementById("login-err").style.display="none";
+  document.getElementById("internal-err").style.display="none";
+  showPage("page-login");
+}
+
+// ═══════════════════════════════════════════════════════════
+// INTERNAL SHELL
+// ═══════════════════════════════════════════════════════════
+function launchInternalShell(){
+  var u=state.user;
+  document.getElementById("nav-username").textContent=(u.name+" · "+(u.role==="admin"?"ADMIN":"STAFF")).toUpperCase();
+  var isStaff=u.role==="staff";
+  var tabs=isStaff?["tasks"]:["dashboard","tasks","clients","compliance"];
+  var labels={dashboard:"Dashboard",tasks:"Tasks",clients:"Clients",compliance:"Compliance"};
+  var tabsEl=document.getElementById("internal-tabs");
+  tabsEl.innerHTML=tabs.map(function(t){return'<button class="nav-tab'+(state.internalTab===t?" active":"")+'" onclick="switchInternalTab(\''+t+'\')">'+(labels[t]||t)+'</button>';}).join("");
+  showPage("page-internal");
+  renderInternalContent();
+}
+
+function switchInternalTab(t){
+  state.internalTab=t;
+  state.filterStaff="All";state.filterStatus="All";state.filterSearch="";
+  var isStaff=state.user.role==="staff";
+  var tabs=isStaff?["tasks"]:["dashboard","tasks","clients","compliance"];
+  document.getElementById("internal-tabs").innerHTML=tabs.map(function(tab){var labels={dashboard:"Dashboard",tasks:"Tasks",clients:"Clients",compliance:"Compliance"};return'<button class="nav-tab'+(t===tab?" active":"")+'" onclick="switchInternalTab(\''+tab+'\')">'+(labels[tab]||tab)+'</button>';}).join("");
+  renderInternalContent();
+}
+
+function renderInternalContent(){
+  var el=document.getElementById("internal-content");
+  var t=state.internalTab;
+  if(t==="dashboard")el.innerHTML=renderDashboard();
+  else if(t==="tasks")el.innerHTML=renderTasksTab(state.user.role,state.user.name,null,null);
+  else if(t==="clients")el.innerHTML=renderClientsTab();
+  else if(t==="compliance")el.innerHTML=renderComplianceTab();
+}
+
+// ═══════════════════════════════════════════════════════════
+// CLIENT SHELL
+// ═══════════════════════════════════════════════════════════
+function launchClientShell(){
+  var u=state.user;
+  document.getElementById("client-username").textContent=u.name.toUpperCase();
+  var tabs=u.isGroup?["tasks","compliance","entities"]:["tasks","compliance"];
+  var tabsEl=document.getElementById("client-tabs");
+  tabsEl.innerHTML=tabs.map(function(t){return'<button class="nav-tab'+(state.clientTab===t?" active":"")+'" onclick="switchClientTab(\''+t+'\')">'+(t.charAt(0).toUpperCase()+t.slice(1))+'</button>';}).join("");
+  showPage("page-client");
+  renderClientContent();
+}
+
+function switchClientTab(t){
+  state.clientTab=t;
+  var u=state.user;
+  var tabs=u.isGroup?["tasks","compliance","entities"]:["tasks","compliance"];
+  document.getElementById("client-tabs").innerHTML=tabs.map(function(tab){return'<button class="nav-tab'+(t===tab?" active":"")+'" onclick="switchClientTab(\''+tab+'\')">'+(tab.charAt(0).toUpperCase()+tab.slice(1))+'</button>';}).join("");
+  renderClientContent();
+}
+
+function renderClientContent(){
+  var u=state.user;
+  var el=document.getElementById("client-content");
+  if(u.isGroup){
+    var grp=GROUPS.find(function(g){return g.id===u.groupId;});
+    var gClients=grp?getGroupClients(grp):[];
+    var allNames=[];gClients.forEach(function(c){allNames.push(c.short);allNames.push(c.name);});
+    if(state.clientTab==="tasks")el.innerHTML=renderTasksTab("client",null,null,allNames);
+    else if(state.clientTab==="compliance")el.innerHTML=renderGroupComps(gClients);
+    else if(state.clientTab==="entities")el.innerHTML=renderGroupEntities(gClients);
+  } else {
+    var names=[u.name,u.fullName];
+    if(state.clientTab==="tasks")el.innerHTML=renderTasksTab("client",null,names,null);
+    else if(state.clientTab==="compliance")el.innerHTML=renderSingleClientComps(u.clientId);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════════════════════
+function renderDashboard(){
+  var tasks=state.tasks;
+  var total=tasks.length, done=tasks.filter(function(t){return t.status==="Done";}).length;
+  var pending=tasks.filter(function(t){return t.status==="Pending";}).length;
+  var inprog=tasks.filter(function(t){return t.status==="In Progress";}).length;
+  var over=tasks.filter(function(t){return t.dueDate&&t.dueDate<todayStr()&&t.status!=="Done";}).length;
+  var high=tasks.filter(function(t){return t.priority==="High"&&t.status!=="Done";});
+
+  var staffHtml=STAFF.map(function(s){
+    var st=tasks.filter(function(t){return t.staff===s;}),dn=st.filter(function(t){return t.status==="Done";}).length;
+    var pct=st.length?Math.round(dn/st.length*100):0,c=staffColor(s);
+    return'<div class="staff-card"><div style="display:flex;justify-content:space-between;margin-bottom:10px;"><span style="font-size:14px;font-weight:700;color:'+c+'">'+s+'</span><span style="font-size:11px;color:var(--muted)">'+dn+'/'+st.length+'</span></div><div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%;background:'+c+'"></div></div><div style="font-size:10px;color:var(--muted);margin-top:2px">'+pct+'% complete</div></div>';
+  }).join("");
+
+  var highHtml=high.length?'<div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:8px">High Priority Open ('+high.length+')</div>'+high.map(function(t){var sc=statusClass(t.status);return'<div style="background:var(--bg3);border:1px solid #2d1515;border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px"><div><div style="font-size:13px;color:var(--text);font-weight:500">'+esc(t.title)+'</div><div style="font-size:11px;color:var(--muted);margin-top:2px">'+esc(t.client)+' · '+esc(t.staff)+'</div></div><span class="badge '+sc+'">'+t.status+'</span></div>';}).join(""):"";
+
+  return'<div style="margin-bottom:20px"><div style="font-size:20px;font-family:\'Playfair Display\',serif;color:var(--gold)">Good Morning</div><div style="font-size:12px;color:var(--muted);margin-top:3px">'+new Date().toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long",year:"numeric"})+' · '+(total-done)+' tasks open</div></div><div class="stats"><div class="stat" style="background:#1a160a;border:1px solid #e2c97e22"><div class="stat-val" style="color:var(--gold)">'+total+'</div><div class="stat-lbl">Total</div></div><div class="stat" style="background:#1a1200;border:1px solid #f59e0b22"><div class="stat-val" style="color:var(--amber)">'+pending+'</div><div class="stat-lbl">Pending</div></div><div class="stat" style="background:#061220;border:1px solid #38bdf822"><div class="stat-val" style="color:var(--blue)">'+inprog+'</div><div class="stat-lbl">In Progress</div></div><div class="stat" style="background:#061a0c;border:1px solid #4ade8022"><div class="stat-val" style="color:var(--green)">'+done+'</div><div class="stat-lbl">Done</div></div><div class="stat" style="background:#1a0606;border:1px solid #ef444422"><div class="stat-val" style="color:var(--red)">'+over+'</div><div class="stat-lbl">Overdue</div></div></div><div class="staff-grid">'+staffHtml+'</div>'+highHtml;
+}
+
+// ═══════════════════════════════════════════════════════════
+// TASKS TAB
+// ═══════════════════════════════════════════════════════════
+function renderTasksTab(role,staffName,clientNames,groupNames){
+  var filterNames=groupNames||clientNames;
+  var tasks=state.tasks.slice();
+  if(role==="staff")tasks=tasks.filter(function(t){return t.staff===staffName;});
+  if(role==="client"&&filterNames)tasks=tasks.filter(function(t){return filterNames.indexOf(t.client)!==-1;});
+  if(state.filterStaff!=="All")tasks=tasks.filter(function(t){return t.staff===state.filterStaff;});
+  if(state.filterStatus!=="All")tasks=tasks.filter(function(t){return t.status===state.filterStatus;});
+  if(state.filterSearch)tasks=tasks.filter(function(t){return(t.title+" "+t.client+" "+t.notes).toLowerCase().indexOf(state.filterSearch.toLowerCase())!==-1;});
+
+  var isAdmin=role==="admin";
+  var filtersHtml=isAdmin?'<input class="inp" style="flex:1;min-width:140px" placeholder="Search..." oninput="state.filterSearch=this.value;rerenderTasks(\''+role+'\',\''+staffName+'\',null,null)" value="'+esc(state.filterSearch)+'"/>'+["All"].concat(STAFF).map(function(s){return'<button class="btn '+(state.filterStaff===s?"btn-primary":"btn-ghost")+'" style="padding:6px 11px" onclick="state.filterStaff=\''+s+'\';rerenderTasks(\''+role+'\',\''+staffName+'\',null,null)">'+s+'</button>';}).join("")+'<select class="inp" style="width:auto" onchange="state.filterStatus=this.value;rerenderTasks(\''+role+'\',\''+staffName+'\',null,null)"><option value="All"'+(state.filterStatus==="All"?" selected":"")+'>All Status</option>'+STATUSES.map(function(s){return'<option'+(state.filterStatus===s?" selected":"")+'>'+s+'</option>';}).join("")+'</select>'
+  :'<input class="inp" style="flex:1;min-width:140px" placeholder="Search..." oninput="state.filterSearch=this.value;rerenderTasks(\''+role+'\',\''+staffName+'\','+JSON.stringify(clientNames)+','+JSON.stringify(groupNames)+')" value="'+esc(state.filterSearch)+'"/><select class="inp" style="width:auto" onchange="state.filterStatus=this.value;rerenderTasks(\''+role+'\',\''+staffName+'\','+JSON.stringify(clientNames)+','+JSON.stringify(groupNames)+')"><option value="All"'+(state.filterStatus==="All"?" selected":"")+'>All Status</option>'+STATUSES.map(function(s){return'<option'+(state.filterStatus===s?" selected":"")+'>'+s+'</option>';}).join("")+'</select>';
+
+  var addBtn='<button class="btn btn-primary" onclick="openAddTask(\''+role+'\',\''+esc(staffName)+'\','+JSON.stringify(filterNames)+')">+ '+(role==="client"?"New Request":"Add Task")+'</button>';
+
+  var taskHtml="";
+  if(isAdmin&&state.filterStaff==="All"){
+    taskHtml=STAFF.map(function(s){
+      var sl=tasks.filter(function(t){return t.staff===s;});if(!sl.length)return"";
+      return'<div style="margin-bottom:24px"><div class="section-head"><div class="section-bar" style="background:'+staffColor(s)+'"></div><span class="section-name" style="color:'+staffColor(s)+'">'+s+'</span><span class="section-count">'+sl.length+'</span></div>'+sl.map(function(t){return renderTaskCard(t,role);}).join("")+'</div>';
+    }).join("");
+  } else {
+    taskHtml=tasks.map(function(t){return renderTaskCard(t,role);}).join("");
+  }
+  if(!tasks.length)taskHtml='<div style="text-align:center;color:var(--muted2);padding:40px 0;font-size:13px">No tasks found.</div>';
+
+  return'<div class="filter-bar">'+filtersHtml+addBtn+'</div><div class="filter-count">'+tasks.length+' tasks</div>'+taskHtml;
+}
+
+function rerenderTasks(role,staffName,clientNames,groupNames){
+  var isInternal=role==="admin"||role==="staff";
+  if(isInternal){document.getElementById("internal-content").innerHTML=renderTasksTab(role,staffName,clientNames,groupNames);}
+  else{document.getElementById("client-content").innerHTML=renderTasksTab(role,staffName,clientNames,groupNames);}
+}
+
+function renderTaskCard(t,role){
+  var over=t.dueDate&&t.dueDate<todayStr()&&t.status!=="Done";
+  var sc=statusClass(t.status);
+  var nexts=STATUSES.filter(function(s){return s!==t.status;}).slice(0,2);
+  var actionBtns=role!=="client"?'<div class="task-actions">'+nexts.map(function(s){return'<button class="btn btn-ghost" onclick="changeTaskStatus('+t.id+',\''+s+'\')">to '+s+'</button>';}).join("")+(role==="admin"?'<button class="btn btn-ghost" onclick="openEditTask('+t.id+')">Edit</button><button class="btn btn-danger" onclick="deleteTask('+t.id+')">Del</button>':'')+'</div>':"";
+  return'<div class="card'+(over?" overdue":"")+'"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px"><div class="task-title">'+esc(t.title)+'</div>'+(over?'<span style="font-size:11px;color:var(--red);flex-shrink:0;margin-left:8px">Overdue</span>':"")+'</div><div class="task-badges"><span class="badge">'+esc(t.client)+'</span>'+(t.staff?'<span class="badge" style="color:'+staffColor(t.staff)+'">'+t.staff+'</span>':"")+'<span class="badge '+sc+'">'+t.status+'</span><span class="badge" style="color:'+priColor(t.priority)+'">'+t.priority+'</span><span class="badge">'+t.category+'</span></div>'+(t.notes?'<div class="task-notes">'+esc(t.notes)+'</div>':"")+(t.dueDate?'<div class="task-due'+(over?" overdue":"")+'">Due: '+fmtDate(t.dueDate)+'</div>':"")+'</div>'+actionBtns+'</div>';
+}
+
+function changeTaskStatus(id,s){
+  state.tasks=state.tasks.map(function(t){return t.id===id?Object.assign({},t,{status:s}):t;});
+  saveTasks();
+  if(state.user.role==="admin"||state.user.role==="staff")renderInternalContent();
+  else renderClientContent();
+}
+function deleteTask(id){
+  if(!confirm("Delete this task?"))return;
+  state.tasks=state.tasks.filter(function(t){return t.id!==id;});
+  saveTasks();renderInternalContent();
+}
+
+// ═══════════════════════════════════════════════════════════
+// TASK MODAL
+// ═══════════════════════════════════════════════════════════
+var _modalRole=null,_modalClientNames=null;
+
+function openAddTask(role,staffName,filterNames){
+  _modalRole=role;_modalClientNames=filterNames;state.editingTaskId=null;
+  document.getElementById("task-modal-title").textContent=role==="client"?"Submit New Request":"Add Task";
+  document.getElementById("task-modal-body").innerHTML=renderTaskForm(null,role,staffName);
+  document.getElementById("task-modal").classList.add("open");
+}
+function openEditTask(id){
+  var t=state.tasks.find(function(x){return x.id===id;});if(!t)return;
+  _modalRole="admin";state.editingTaskId=id;
+  document.getElementById("task-modal-title").textContent="Edit Task";
+  document.getElementById("task-modal-body").innerHTML=renderTaskForm(t,"admin",null);
+  document.getElementById("task-modal").classList.add("open");
+}
+function closeTaskModal(){document.getElementById("task-modal").classList.remove("open");}
+
+function renderTaskForm(t,role,staffName){
+  var v=t||{title:"",client:"",staff:staffName||"Anuja",category:"Financials",priority:"Medium",status:"Pending",notes:"",dueDate:""};
+  var isClient=role==="client";
+  return(isClient?"":"<div class='form-grid'><div><label class='lbl'>Client</label><input class='inp' id='tf-client' value='"+esc(v.client)+"'/></div><div><label class='lbl'>Assigned To</label><select class='inp' id='tf-staff'>"+STAFF.map(function(s){return'<option'+(v.staff===s?" selected":"")+'>'+s+'</option>';}).join("")+"</select></div></div>")
+  +"<div class='form-grid'><div class='full'><label class='lbl'>Task Title *</label><input class='inp' id='tf-title' value='"+esc(v.title)+"' placeholder='Describe the task...'/></div><div><label class='lbl'>Category</label><select class='inp' id='tf-cat'>"+CATS.map(function(c){return'<option'+(v.category===c?" selected":"")+'>'+c+'</option>';}).join("")+"</select></div><div><label class='lbl'>Priority</label><select class='inp' id='tf-pri'>"+PRIS.map(function(p){return'<option'+(v.priority===p?" selected":"")+'>'+p+'</option>';}).join("")+"</select></div>"
+  +(isClient?"":"<div><label class='lbl'>Status</label><select class='inp' id='tf-status'>"+STATUSES.map(function(s){return'<option'+(v.status===s?" selected":"")+'>'+s+'</option>';}).join("")+"</select></div>")
+  +"<div><label class='lbl'>Due Date</label><input type='date' class='inp' id='tf-due' value='"+esc(v.dueDate)+"'/></div><div class='full'><label class='lbl'>Notes</label><textarea class='inp' id='tf-notes' style='resize:vertical;min-height:70px'>"+esc(v.notes)+"</textarea></div></div>"
+  +"<div style='display:flex;gap:10px;justify-content:flex-end'><button class='btn btn-ghost' onclick='closeTaskModal()'>Cancel</button><button class='btn btn-primary' onclick='saveTaskForm(\""+role+"\")'>Save Task</button></div>";
+}
+
+function saveTaskForm(role){
+  var title=(document.getElementById("tf-title")||{}).value||"";
+  if(!title.trim()){alert("Task title is required.");return;}
+  var isClient=role==="client";
+  var t={
+    title:title.trim(),
+    client:isClient?(_modalClientNames&&_modalClientNames[0]||""):(document.getElementById("tf-client")||{}).value||"",
+    staff:isClient?"":(document.getElementById("tf-staff")||{}).value||"Anuja",
+    category:(document.getElementById("tf-cat")||{}).value||"Financials",
+    priority:(document.getElementById("tf-pri")||{}).value||"Medium",
+    status:isClient?"Pending":(document.getElementById("tf-status")||{}).value||"Pending",
+    notes:(document.getElementById("tf-notes")||{}).value||"",
+    dueDate:(document.getElementById("tf-due")||{}).value||"",
+  };
+  if(state.editingTaskId){
+    state.tasks=state.tasks.map(function(x){return x.id===state.editingTaskId?Object.assign({},x,t):x;});
+  } else {
+    t.id=uid();t.createdAt=new Date().toISOString();
+    state.tasks=state.tasks.concat([t]);
+  }
+  saveTasks();closeTaskModal();
+  if(role==="admin"||role==="staff")renderInternalContent();
+  else renderClientContent();
+}
+
+// ═══════════════════════════════════════════════════════════
+// CLIENTS TAB
+// ═══════════════════════════════════════════════════════════
+function renderClientsTab(){
+  if(state.selectedClient)return renderClientDetail(state.selectedClient);
+  var filtered=CLIENTS.filter(function(c){
+    if(state.clientTypeFilter!=="All"&&c.type!==state.clientTypeFilter)return false;
+    if(state.clientSearch&&c.name.toLowerCase().indexOf(state.clientSearch.toLowerCase())===-1)return false;
+    return true;
+  });
+  var typeFilters=["All","Pvt Ltd","LLP","Individual","Other"].map(function(t){return'<button class="btn '+(state.clientTypeFilter===t?"btn-primary":"btn-ghost")+'" style="padding:6px 11px" onclick="state.clientTypeFilter=\''+t+'\';renderInternalContent()">'+t+'</button>';}).join("");
+  var rows=filtered.map(function(c){
+    var open=state.tasks.filter(function(t){return(t.client===c.short||t.client===c.name)&&t.status!=="Done";}).length;
+    var comps=getClientComps(c),next=comps[0];
+    var grp=GROUPS.find(function(g){return g.clientIds.indexOf(c.id)!==-1;});
+    return'<div class="client-row" onclick="state.selectedClient=\''+c.id+'\';renderInternalContent()"><div><div style="font-size:13px;font-weight:600;color:var(--text)">'+esc(c.name)+'</div><div style="display:flex;gap:6px;margin-top:5px;flex-wrap:wrap"><span class="badge" style="color:'+typeColor(c.type)+'">'+c.type+'</span>'+(grp?'<span class="badge" style="color:var(--orange);background:#1a0f00">Group</span>':'')+(c.gst?'<span class="badge" style="color:var(--green);background:#0a1f0a">GST</span>':"")+(c.tds?'<span class="badge" style="color:var(--blue);background:#06121f">TDS</span>':"")+(c.audit?'<span class="badge" style="color:var(--amber);background:#1a1200">Audit</span>':"")+'</div></div><div style="text-align:right">'+(open?'<div style="font-size:12px;color:var(--amber)">'+open+' open</div>':"")+(next?'<div style="font-size:11px;color:'+(next.daysLeft<=7?"var(--red)":next.daysLeft<=15?"var(--amber)":"var(--muted2)")+';margin-top:2px">Next: '+esc(next.name)+' ('+next.daysLeft+'d)</div>':"")+'</div></div>';
+  }).join("");
+  return'<div class="filter-bar"><input class="inp" style="flex:1;min-width:160px" placeholder="Search clients..." oninput="state.clientSearch=this.value;renderInternalContent()" value="'+esc(state.clientSearch)+'"/>'+typeFilters+'</div>'+rows;
+}
+
+function renderClientDetail(clientId){
+  var c=CLIENTS.find(function(x){return x.id===clientId;});if(!c)return"";
+  var comps=getClientComps(c);
+  var cTasks=state.tasks.filter(function(t){return t.client===c.short||t.client===c.name;});
+  var grp=GROUPS.find(function(g){return g.clientIds.indexOf(c.id)!==-1;});
+  var compHtml=comps.map(function(comp){
+    var urg=comp.daysLeft<=7,soon=comp.daysLeft<=15;
+    return'<div class="comp-row'+(urg?" urgent":soon?" soon":"")+'"><div><div class="comp-name">'+esc(comp.name)+'</div><div class="comp-meta">'+comp.freq+' · '+comp.cat+'</div></div><div><div class="comp-days" style="color:'+(urg?"var(--red)":soon?"var(--amber)":"var(--muted)")+'">'+(comp.daysLeft===0?"Today":comp.daysLeft===1?"Tomorrow":comp.daysLeft+" days")+'</div><div class="comp-date">'+fmtDate(comp.nextDue.toISOString())+'</div></div></div>';
+  }).join("");
+  var tasksHtml=cTasks.length?cTasks.map(function(t){var sc=statusClass(t.status);return'<div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px"><div style="font-size:13px;color:var(--text)">'+esc(t.title)+'</div><div style="display:flex;gap:6px"><span class="badge" style="color:'+staffColor(t.staff)+'">'+t.staff+'</span><span class="badge '+sc+'">'+t.status+'</span></div></div>';}).join(""):'<div style="font-size:13px;color:var(--muted);padding:12px 0">No tasks found for this client.</div>';
+  return'<button class="btn btn-ghost" style="margin-bottom:16px" onclick="state.selectedClient=null;renderInternalContent()">← Back</button><div style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px"><div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px">'+esc(c.name)+'</div><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge" style="color:'+typeColor(c.type)+'">'+c.type+'</span>'+(c.gst?'<span class="badge" style="color:var(--green);background:#0a1f0a">GST Registered</span>':"")+(c.tds?'<span class="badge" style="color:var(--blue);background:#06121f">TDS Applicable</span>':"")+(c.audit?'<span class="badge" style="color:var(--amber);background:#1a1200">Audit Required</span>':"")+( grp?'<span class="badge" style="color:var(--orange);background:#1a0f00">KJMC Group · PIN: '+grp.pin+'</span>':'<span class="badge">PIN: '+c.pin+'</span>')+'</div></div><div style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:10px">Statutory Compliances</div>'+compHtml+'<div style="font-size:13px;font-weight:700;color:var(--gold);margin:16px 0 10px">Tasks ('+cTasks.length+')</div>'+tasksHtml;
+}
+
+// ═══════════════════════════════════════════════════════════
+// COMPLIANCE TAB
+// ═══════════════════════════════════════════════════════════
+function renderComplianceTab(){
+  var days=state.compDays;
+  var all=[];
+  CLIENTS.forEach(function(c){getClientComps(c).forEach(function(comp){if(comp.daysLeft<=days)all.push(Object.assign({},comp,{clientName:c.short,clientType:c.type}));});});
+  all.sort(function(a,b){return a.daysLeft-b.daysLeft;});
+  var btns=[7,15,30,60,90].map(function(d){return'<button class="btn '+(days===d?"btn-primary":"btn-ghost")+'" style="padding:6px 12px" onclick="state.compDays='+d+';renderInternalContent()">'+d+'d</button>';}).join("");
+  var rows=all.map(function(c){
+    var urg=c.daysLeft<=7,soon=c.daysLeft<=15;
+    return'<div class="comp-row'+(urg?" urgent":soon?" soon":"")+'"><div><div class="comp-name">'+esc(c.name)+'</div><div class="comp-meta"><span style="color:var(--muted);margin-right:6px">'+esc(c.clientName)+'</span>'+c.freq+' · '+c.cat+'</div></div><div><div class="comp-days" style="color:'+(urg?"var(--red)":soon?"var(--amber)":"var(--muted)")+'">'+(c.daysLeft===0?"Today":c.daysLeft===1?"Tomorrow":c.daysLeft+" days")+'</div><div class="comp-date">'+fmtDate(c.nextDue.toISOString())+'</div></div></div>';
+  }).join("")||'<div style="text-align:center;color:var(--muted2);padding:40px">No compliances due within '+days+' days</div>';
+  return'<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center"><span style="font-size:12px;color:var(--muted)">Show next:</span>'+btns+'</div><div style="font-size:12px;color:var(--muted);margin-bottom:12px">'+all.length+' compliances due within '+days+' days</div>'+rows;
+}
+
+// ═══════════════════════════════════════════════════════════
+// CLIENT COMPLIANCE VIEWS
+// ═══════════════════════════════════════════════════════════
+function renderSingleClientComps(clientId){
+  var c=CLIENTS.find(function(x){return x.id===clientId;});if(!c)return"";
+  var comps=getClientComps(c);
+  return'<div style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:12px">Your Upcoming Compliances</div>'+comps.slice(0,12).map(function(comp){var urg=comp.daysLeft<=7,soon=comp.daysLeft<=15;return'<div class="comp-row'+(urg?" urgent":soon?" soon":"")+'"><div><div class="comp-name">'+esc(comp.name)+'</div><div class="comp-meta">'+comp.freq+' · '+comp.cat+'</div></div><div><div class="comp-days" style="color:'+(urg?"var(--red)":soon?"var(--amber)":"var(--muted)")+'">'+(comp.daysLeft===0?"Today":comp.daysLeft===1?"Tomorrow":comp.daysLeft+" days")+'</div><div class="comp-date">'+fmtDate(comp.nextDue.toISOString())+'</div></div></div>';}).join("");
+}
+
+function renderGroupComps(gClients){
+  var all=[];
+  gClients.forEach(function(c){getClientComps(c).forEach(function(comp){all.push(Object.assign({},comp,{clientName:c.short}));});});
+  all.sort(function(a,b){return a.daysLeft-b.daysLeft;});
+  return'<div style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:12px">Group Compliance Calendar</div>'+all.slice(0,40).map(function(c){var urg=c.daysLeft<=7,soon=c.daysLeft<=15;return'<div class="comp-row'+(urg?" urgent":soon?" soon":"")+'"><div><div class="comp-name">'+esc(c.name)+'</div><div class="comp-meta"><span style="color:var(--muted);margin-right:6px">'+esc(c.clientName)+'</span>'+c.freq+' · '+c.cat+'</div></div><div><div class="comp-days" style="color:'+(urg?"var(--red)":soon?"var(--amber)":"var(--muted)")+'">'+(c.daysLeft===0?"Today":c.daysLeft===1?"Tomorrow":c.daysLeft+" days")+'</div><div class="comp-date">'+fmtDate(c.nextDue.toISOString())+'</div></div></div>';}).join("");
+}
+
+function renderGroupEntities(gClients){
+  var rows=gClients.map(function(c){
+    var open=state.tasks.filter(function(t){return(t.client===c.short||t.client===c.name)&&t.status!=="Done";}).length;
+    var next=getClientComps(c)[0];
+    return'<div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px"><div><div style="font-size:13px;font-weight:600;color:var(--text)">'+esc(c.name)+'</div><div style="display:flex;gap:6px;margin-top:5px;flex-wrap:wrap"><span class="badge" style="color:'+typeColor(c.type)+'">'+c.type+'</span>'+(c.gst?'<span class="badge" style="color:var(--green);background:#0a1f0a">GST</span>':"")+(c.tds?'<span class="badge" style="color:var(--blue);background:#06121f">TDS</span>':"")+(c.audit?'<span class="badge" style="color:var(--amber);background:#1a1200">Audit</span>':"")+'</div></div><div style="text-align:right">'+(open?'<div style="font-size:12px;color:var(--amber)">'+open+' open tasks</div>':"")+(next?'<div style="font-size:11px;color:'+(next.daysLeft<=7?"var(--red)":next.daysLeft<=15?"var(--amber)":"var(--muted2)")+';margin-top:2px">Next: '+esc(next.name)+' ('+next.daysLeft+'d)</div>':"")+'</div></div>';
+  }).join("");
+  return'<div style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:12px">'+gClients.length+' Group Entities</div>'+rows;
+}
+</script>
+</body>
+</html>
